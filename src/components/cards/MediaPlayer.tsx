@@ -1,4 +1,3 @@
-import React from "react";
 import type { MusicPost } from "../../types/posts/post";
 
 interface MediaPlayerProps {
@@ -8,6 +7,7 @@ interface MediaPlayerProps {
   duration: string;
   progress: number;
   onTogglePlay: () => void;
+  showPlayButton?: boolean; // Flag to show/hide play button (for future functionality)
 }
 
 export default function MediaPlayer({
@@ -17,9 +17,25 @@ export default function MediaPlayer({
   duration = "0:00",
   progress = 0,
   onTogglePlay,
+  showPlayButton = true,
 }: MediaPlayerProps) {
   return (
-    <div className="col-span-2">
+    <div className="col-span-2 relative">
+      <a
+        href={`/posts/${post.id}`}
+        className="absolute top-3 right-3 z-10 p-2 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-zinc-700 transition-colors shadow-sm"
+        title="Ver detalles"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="20px"
+          viewBox="0 -960 960 960"
+          width="20px"
+          className="fill-zinc-700 dark:fill-zinc-300"
+        >
+          <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
+        </svg>
+      </a>
       <div className="rounded-xl bg-white dark:bg-zinc-800 p-4 border border-zinc-100 dark:border-zinc-800 shadow-sm">
         <div className="flex items-center gap-4">
           <div
@@ -36,14 +52,13 @@ export default function MediaPlayer({
               {post.audio.genre && ` • ${post.audio.genre}`}
             </p>
           </div>
-          <button
-            onClick={onTogglePlay}
-            className="flex shrink-0 items-center justify-center rounded-full size-12 bg-primary text-white shadow-md active:scale-95 transition-transform"
-          >
-            <span className="material-symbols-outlined fill-1 text-2xl">
-              {isPlaying ? "pause" : "play_arrow"}
-            </span>
-          </button>
+          {showPlayButton && (
+            <div className="flex shrink-0 items-center justify-center rounded-full size-12 bg-primary text-white shadow-md opacity-50 cursor-not-allowed">
+              <span className="material-symbols-outlined fill-1 text-2xl">
+                {isPlaying ? "pause" : "play_arrow"}
+              </span>
+            </div>
+          )}
         </div>
         <div className="mt-4">
           <div className="flex h-1.5 items-center justify-center w-full bg-zinc-100 dark:bg-zinc-700 rounded-full overflow-hidden">

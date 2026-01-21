@@ -1,11 +1,22 @@
-import Layout from "../layouts/Layout";
+import Masonry from "react-masonry-css";
 import { usePosts } from "../Api/usePosts";
 import AboutMe from "../components/Ui/AboutMe";
-import Masonry from "../components/Ui/Masonry";
 import FeedRenderer from "../components/Ui/FeedRenderer";
+import Layout from "../layouts/Layout";
+
+const breakpointColumnsObj = {
+  default: 3,
+  1100: 2,
+  700: 1,
+};
 
 export default function Home() {
-  const { posts, loading, error } = usePosts();
+  const { posts, loading, error, hasMore, loadMore } = usePosts({});
+
+  const handleLoadMore = () => {
+    loadMore();
+  };
+
   return (
     <Layout>
       <AboutMe
@@ -43,15 +54,42 @@ export default function Home() {
           },
         ]}
       />
+      {error && <p className="text-red-500 text-center py-4">Error: {error}</p>}
 
-      {loading && <p>Loading posts...</p>}
-      {error && <p>Error: {error}</p>}
-      {!loading && !error && (
-        <Masonry cols={3} gap={4}>
+      {posts.length > 0 && (
+        <h2 className="text-2xl font-semibold mb-4">Últimos Posts</h2>
+      )}
+      {posts.length > 0 && (
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
           {posts.map((post) => (
             <FeedRenderer key={post.id} item={{ post }} />
           ))}
         </Masonry>
+      )}
+
+      {loading && (
+        <p className="text-center py-8 text-gray-500">Cargando posts...</p>
+      )}
+
+      {!loading && hasMore && (
+        <div className="flex justify-center py-8">
+          <button
+            onClick={handleLoadMore}
+            className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] active:translate-y-0.5 active:shadow-none"
+          >
+            Cargar más
+          </button>
+        </div>
+      )}
+
+      {!loading && posts.length === 0 && !error && (
+        <p className="text-center py-8 text-gray-500">
+          No hay posts disponibles
+        </p>
       )}
     </Layout>
   );

@@ -2,18 +2,33 @@ import type { ThoughtPost } from "../../types/posts/post";
 
 export default function ThoughtCard(props: ThoughtPost) {
   return (
-    <div className="col-span-1 rounded-xl p-4 flex flex-col justify-between h-auto aspect-[3/4] {inverted ? 'bg-zinc-900 dark:bg-zinc-100' : 'bg-zinc-100 dark:bg-zinc-900'}">
-      <div className="size-8 rounded-full flex items-center justify-center {inverted ? 'bg-white/20 dark:bg-black/10' : 'bg-black/10 dark:bg-white/20'}">
-        <span className="material-symbols-outlined text-sm {inverted ? 'text-white dark:text-black' : 'text-black dark:text-white'}">
+    <div className="col-span-1 rounded-xl p-6 flex flex-col justify-between h-auto aspect-3/4 bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 relative hover:shadow-xl hover:border-primary dark:hover:border-primary transition-all shadow-md">
+      <a
+        href={`/posts/${props.id}`}
+        className="absolute top-3 right-3 z-10 p-2 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-zinc-700 transition-colors shadow-md border border-zinc-200 dark:border-zinc-600"
+        title="Ver detalles"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="16px"
+          viewBox="0 -960 960 960"
+          width="16px"
+          className="fill-zinc-700 dark:fill-zinc-300"
+        >
+          <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
+        </svg>
+      </a>
+      <div className="size-10 rounded-full flex items-center justify-center bg-primary/10 dark:bg-primary/20 border border-primary/30">
+        <span className="material-symbols-outlined text-lg text-primary">
           light_mode
         </span>
       </div>
-      <p className="text-base font-medium leading-relaxed {inverted ? 'text-white dark:text-black' : 'text-black dark:text-white'}">
+      <p className="text-base font-medium leading-relaxed text-zinc-800 dark:text-zinc-100">
         {props.content}
       </p>
       <div className="flex items-center gap-2">
-        <div className="size-5 rounded-full bg-primary"></div>
-        <span className="text-[10px] uppercase tracking-widest font-bold {inverted ? 'text-white/60 dark:text-black/60' : 'text-black/60 dark:text-white/60'}">
+        <div className="size-6 rounded-full bg-primary shadow-sm"></div>
+        <span className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400">
           {props.author?.name || "Anonymous"}
         </span>
       </div>

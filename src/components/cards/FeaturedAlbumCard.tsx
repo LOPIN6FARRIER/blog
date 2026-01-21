@@ -14,6 +14,18 @@ export default function FeaturedAlbumCard({
   onTogglePlay,
   variant = "default",
 }: FeaturedAlbumCardProps) {
+  // Added playback progress indicator
+  const [progress, setProgress] = React.useState(0);
+
+  React.useEffect(() => {
+    if (isPlaying) {
+      const interval = setInterval(() => {
+        setProgress((prev) => (prev < 100 ? prev + 1 : 0));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [isPlaying]);
+
   return (
     <div
       className={`${
@@ -23,11 +35,14 @@ export default function FeaturedAlbumCard({
       } bg-white dark:bg-gray-900 overflow-hidden`}
     >
       <div className="flex flex-col items-stretch">
-        <div
-          className="w-full bg-center bg-no-repeat aspect-square bg-cover"
-          data-alt={post.audio.coverUrl || "Album cover"}
-          style={{ backgroundImage: `url('${post.audio.coverUrl || ""}')` }}
-        ></div>
+        {/* Added redirection to individual post page */}
+        <a href={`/posts/${post.id}`} className="block">
+          <div
+            className="w-full bg-center bg-no-repeat aspect-square bg-cover"
+            data-alt={post.audio.coverUrl || "Album cover"}
+            style={{ backgroundImage: `url('${post.audio.coverUrl || ""}')` }}
+          ></div>
+        </a>
         <div className="flex flex-col gap-4 p-5">
           <div>
             <p className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-1">
@@ -58,6 +73,13 @@ export default function FeaturedAlbumCard({
                 {isPlaying ? "pause" : "play_arrow"}
               </span>
             </button>
+          </div>
+          {/* Playback progress indicator */}
+          <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+            <div
+              className="bg-primary h-1.5 rounded-full"
+              style={{ width: `${progress}%` }}
+            ></div>
           </div>
         </div>
       </div>

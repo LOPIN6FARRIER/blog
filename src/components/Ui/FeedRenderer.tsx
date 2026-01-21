@@ -1,6 +1,7 @@
 import React from "react";
 
 import type { FeedItem } from "../../types/posts/post";
+import AnnouncementCard from "../cards/AnnouncementCard";
 import ArticleCard from "../cards/ArticleCard";
 import CompactLinkCard from "../cards/CompactLinkCard";
 import ContentCard from "../cards/ContentCard";
@@ -11,7 +12,14 @@ import PhotoCard from "../cards/PhotoCard";
 import QuoteCard from "../cards/QuoteCard";
 import ThoughtCard from "../cards/ThoughtCard";
 import VerticalPhotoCard from "../cards/VerticalPothoCard";
-import ImageOverlayCard from "../cards/ImageOverlayCard";
+import YouTubeLinkCard from "../cards/YouTubeLinkCard";
+import VideoCard from "../cards/VideoCard";
+import ProjectCard from "../cards/ProjectCard";
+import EventCard from "../cards/EventCard";
+import { RecommendationCard } from "../cards/RecommendationCard";
+import { RankingCard } from "../cards/RankingCard";
+import { RatingCard } from "../cards/RatingCard";
+import { RecommendationCompactCard } from "../cards/RecommendationCompactCard";
 
 interface FeedRendererProps {
   item: FeedItem;
@@ -40,23 +48,9 @@ const FeedRenderer: React.FC<FeedRendererProps> = ({ item }) => {
         <>
           {size === "full" || size === "large" ? (
             post.featured ? (
-              <HeroCard
-                imageUrl={post.coverImage?.url || ""}
-                alt={post.coverImage?.alt || ""}
-                title={post.title}
-                description={post.excerpt}
-                badge={post.category}
-                href={`/blog/${post.slug}`}
-              />
+              <HeroCard {...post} />
             ) : (
-              <ContentCard
-                imageUrl={post.coverImage?.url || ""}
-                alt={post.coverImage?.alt || ""}
-                title={post.title}
-                category={post.category || ""}
-                description={post.excerpt}
-                timeAgo={post.readTime}
-              />
+              <ContentCard {...post} />
             )
           ) : (
             <ArticleCard {...post} />
@@ -104,36 +98,22 @@ const FeedRenderer: React.FC<FeedRendererProps> = ({ item }) => {
 
       {post.type === "project" && (
         <>
-          {size === "full" ? (
-            <HeroCard
-              imageUrl={post.coverImage?.url || ""}
-              alt={post.coverImage?.alt || ""}
-              title={post.title}
-              description={post.description}
-              badge={post.status === "completed" ? "Completed" : "In Progress"}
-              buttonText="View Project"
-              href={post.liveUrl || `/projects/${post.slug}`}
-            />
-          ) : (
-            <ContentCard
-              imageUrl={post.coverImage?.url || ""}
-              alt={post.coverImage?.alt || ""}
-              title={post.title}
-              category="Project"
-              description={post.description}
-            />
-          )}
+          <ProjectCard {...post} />
         </>
       )}
 
       {post.type === "announcement" && (
-        <HeroCard
-          imageUrl=""
+        <AnnouncementCard
           title={post.title}
-          description={post.content}
-          badge={post.priority === "urgent" ? "Urgent" : "Announcement"}
-          buttonText={post.ctaText || "Learn More"}
-          href={post.ctaUrl || "#"}
+          content={post.content}
+          priority={post.priority}
+          ctaText={post.ctaText}
+          ctaUrl={post.ctaUrl}
+          expiresAt={post.expiresAt}
+          type={post.type}
+          id={post.id}
+          slug={post.slug}
+          createdAt={post.createdAt}
         />
       )}
 
@@ -142,55 +122,30 @@ const FeedRenderer: React.FC<FeedRendererProps> = ({ item }) => {
       {post.type === "video" && (
         <>
           {size === "full" || size === "large" ? (
-            <HeroCard
-              imageUrl={post.video?.thumbnail || ""}
-              alt={post.title}
-              title={post.title}
-              description={post.description}
-              badge={post.category}
-              buttonText="Watch"
-              href={post.video?.embedUrl || post.video?.url || "#"}
-            />
+            <VideoCard {...post} />
           ) : (
-            <ImageOverlayCard
-              id={post.id}
-              type="photo"
-              slug={post.slug}
-              createdAt={post.createdAt}
-              title={post.title}
-              image={{ url: post.video?.thumbnail || "", alt: post.title }}
-            />
+            <YouTubeLinkCard post={post} />
           )}
         </>
       )}
 
       {post.type === "event" && (
         <>
-          {size === "full" ? (
-            <HeroCard
-              imageUrl={post.coverImage?.url || ""}
-              alt={post.coverImage?.alt || ""}
-              title={post.title}
-              description={post.description}
-              badge={
-                post.startDate
-                  ? new Date(post.startDate).toLocaleDateString()
-                  : "Event"
-              }
-              buttonText="View Event"
-              href={post.registrationUrl || "#"}
-            />
-          ) : (
-            <ContentCard
-              imageUrl={post.coverImage?.url || ""}
-              alt={post.coverImage?.alt || ""}
-              title={post.title}
-              category={post.category || "Event"}
-              description={post.description}
-            />
-          )}
+          <EventCard {...post} />
         </>
       )}
+
+      {post.type === "recommendation" && post.compact !== true && (
+        <RecommendationCard post={post} />
+      )}
+
+      {post.type === "recommendation" && post.compact === true && (
+        <RecommendationCompactCard post={post} />
+      )}
+
+      {post.type === "ranking" && <RankingCard post={post} />}
+
+      {post.type === "rating" && <RatingCard post={post} />}
 
       {/* Fallback para tipos no soportados */}
       {![
@@ -204,6 +159,9 @@ const FeedRenderer: React.FC<FeedRendererProps> = ({ item }) => {
         "link",
         "video",
         "event",
+        "recommendation",
+        "ranking",
+        "rating",
       ].includes(post.type) && (
         <div className="rounded-xl bg-zinc-100 dark:bg-zinc-800 p-4">
           <p className="text-sm text-zinc-500">Unsupported post type:</p>

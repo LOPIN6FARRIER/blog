@@ -12,7 +12,10 @@ export type PostType =
   | "project" // Proyectos de portfolio
   | "link" // Enlaces externos con preview
   | "announcement" // Anuncios importantes
-  | "event"; // Eventos con fecha
+  | "event" // Eventos con fecha
+  | "recommendation" // Recomendaciones de series, películas, libros, etc.
+  | "ranking" // Listas o rankings de ítems
+  | "rating"; // Valoraciones individuales de ítems
 
 // ============================================
 // BASE INTERFACES
@@ -93,11 +96,8 @@ export interface ArticlePost extends PostBase {
 export interface PhotoPost extends PostBase {
   type: "photo";
   image: ImageMedia;
-  description?: string;
-  camera?: string;
-  lens?: string;
-  settings?: string; // "f/2.8, 1/500s, ISO 400"
-  location?: string;
+  title: string;
+  category?: string;
 }
 
 /**
@@ -165,6 +165,7 @@ export interface ProjectPost extends PostBase {
   role?: string;
   client?: string;
   year?: number;
+  buttonText?: string;
 }
 
 /**
@@ -213,7 +214,61 @@ export interface EventPost extends PostBase {
   price?: string;
   capacity?: number;
 }
+// ============================================
+// RANKING ITEM TYPE
+// ============================================
 
+export type ItemType = "serie" | "película" | "libro" | "podcast" | "otro";
+
+export type RankingItem = {
+  rank: number;
+  subjectTitle: string;
+  itemType: ItemType;
+  coverImage?: ImageMedia;
+  rating?: number;
+  description?: string;
+  externalUrl?: string;
+};
+// ============================================
+// RANKING/LIST POST (RankingPost)
+// ============================================
+
+export interface RankingPost extends PostBase {
+  type: "ranking";
+  title: string;
+  items: RankingItem[];
+  description?: string;
+  coverImage?: ImageMedia; // Agregado para permitir imágenes de portada
+}
+
+// ============================================
+// RATING POST (RatingPost)
+// ============================================
+
+export interface RatingPost extends PostBase {
+  type: "rating";
+  subjectTitle: string;
+  itemType: ItemType;
+  coverImage?: ImageMedia;
+  rating: number;
+  liked?: boolean;
+  comment?: string;
+}
+// ============================================
+// RECOMMENDATION POST (RecommendationPost)
+// ============================================
+
+export interface RecommendationPost extends PostBase {
+  type: "recommendation";
+  subjectTitle: string;
+  recommendationType: ItemType;
+  description?: string;
+  coverImage?: ImageMedia;
+  rating?: number;
+  externalUrl?: string;
+  recommendedByUser?: boolean;
+  compact?: boolean;
+}
 // ============================================
 // UNION TYPE
 // ============================================
@@ -228,7 +283,10 @@ export type Post =
   | ProjectPost
   | LinkPost
   | AnnouncementPost
-  | EventPost;
+  | EventPost
+  | RecommendationPost
+  | RankingPost
+  | RatingPost;
 
 // ============================================
 // FEED ITEM (para renderizado en MasonryFeed)
@@ -247,25 +305,6 @@ export type PostsQueryParams = {
   category?: string;
   tag?: string;
   limit?: number;
-  offset?: number;
+  page?: number;
   q?: string;
 };
-
-export interface ContentPost {
-  imageUrl: string;
-  alt?: string;
-  title: string;
-  category: string;
-  timeAgo?: string;
-  description?: string;
-}
-
-export interface HeroCardPost {
-  imageUrl: string;
-  alt?: string;
-  badge?: string;
-  title: string;
-  description?: string;
-  buttonText?: string;
-  href?: string;
-}
