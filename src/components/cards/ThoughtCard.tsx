@@ -2,10 +2,10 @@ import type { ThoughtPost } from "../../types/posts/post";
 
 export default function ThoughtCard(props: ThoughtPost) {
   return (
-    <div className="col-span-1 rounded-xl p-6 flex flex-col justify-between h-auto aspect-3/4 bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 relative hover:shadow-xl hover:border-primary dark:hover:border-primary transition-all shadow-md">
+    <div className="col-span-1 rounded-xl p-6 flex flex-col justify-between h-auto aspect-3/4 bg-white dark:bg-gray-900 border-2 border-blue-200 dark:border-gray-700 relative hover:shadow-xl hover:border-primary dark:hover:border-primary transition-all shadow-md">
       <a
         href={`/posts/${props.id}`}
-        className="absolute top-3 right-3 z-10 p-2 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-zinc-700 transition-colors shadow-md border border-zinc-200 dark:border-zinc-600"
+        className="absolute top-3 right-3 z-10 p-2 bg-white/90 dark:bg-gray-950/90 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-gray-800 transition-colors shadow-md border border-blue-200 dark:border-gray-600"
         title="Ver detalles"
       >
         <svg
@@ -23,12 +23,12 @@ export default function ThoughtCard(props: ThoughtPost) {
           light_mode
         </span>
       </div>
-      <p className="text-base font-medium leading-relaxed text-zinc-800 dark:text-zinc-100">
+      <p className="text-base font-medium leading-relaxed text-gray-800 dark:text-gray-100">
         {props.content}
       </p>
       <div className="flex items-center gap-2">
         <div className="size-6 rounded-full bg-primary shadow-sm"></div>
-        <span className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400">
+        <span className="text-[10px] uppercase tracking-widest font-bold text-gray-500 dark:text-gray-400">
           {props.author?.name || "Anonymous"}
         </span>
       </div>

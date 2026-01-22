@@ -13,7 +13,7 @@ export default function RecommendationDetail({
         {[...Array(5)].map((_, i) => (
           <svg
             key={i}
-            className={`w-6 h-6 ${i < stars ? "text-yellow-400" : "text-zinc-300 dark:text-zinc-600"}`}
+            className={`w-6 h-6 ${i < stars ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"}`}
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -75,7 +75,7 @@ export default function RecommendationDetail({
                   <span className="text-3xl font-bold text-zinc-900 dark:text-white">
                     {post.rating.toFixed(1)}
                   </span>
-                  <span className="text-zinc-600 dark:text-zinc-400">/10</span>
+                  <span className="text-gray-600 dark:text-gray-400">/10</span>
                 </div>
               </div>
             )}
@@ -83,7 +83,7 @@ export default function RecommendationDetail({
             {/* Description */}
             {post.description && (
               <p
-                className={`text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed ${post.compact ? "" : "mb-6"}`}
+                className={`text-lg text-gray-700 dark:text-gray-300 leading-relaxed ${post.compact ? "" : "mb-6"}`}
               >
                 {post.description}
               </p>

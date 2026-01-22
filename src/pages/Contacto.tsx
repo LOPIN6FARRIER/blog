@@ -6,19 +6,19 @@ export default function Contacto() {
       <div className="max-w-2xl mx-auto">
         <h1 className="text-4xl font-bold mb-6">Contacto</h1>
 
-        <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-lg p-8 space-y-6">
+        <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-8 space-y-6">
           <div>
             <h2 className="text-2xl font-semibold mb-4 text-zinc-900 dark:text-white">
               ¿Hablamos?
             </h2>
-            <p className="text-zinc-600 dark:text-zinc-400 mb-6">
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
               Si tienes algún proyecto en mente, necesitas ayuda con desarrollo
               frontend, o simplemente quieres conectar, no dudes en escribirme.
             </p>
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-start gap-4 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
+            <div className="flex items-start gap-4 p-4 bg-blue-50 dark:bg-gray-950 rounded-lg">
               <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center shrink-0">
                 <svg
                   className="w-5 h-5 text-blue-600 dark:text-blue-400"
@@ -47,7 +47,7 @@ export default function Contacto() {
               </div>
             </div>
 
-            <div className="flex items-start gap-4 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
+            <div className="flex items-start gap-4 p-4 bg-blue-50 dark:bg-gray-950 rounded-lg">
               <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center shrink-0">
                 <svg
                   className="w-5 h-5 text-purple-600 dark:text-purple-400"
@@ -73,13 +73,13 @@ export default function Contacto() {
                 <h3 className="font-semibold text-zinc-900 dark:text-white mb-1">
                   Ubicación
                 </h3>
-                <p className="text-zinc-600 dark:text-zinc-400">
+                <p className="text-gray-600 dark:text-gray-400">
                   Guadalajara, Jalisco, México
                 </p>
               </div>
             </div>
 
-            <div className="flex items-start gap-4 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
+            <div className="flex items-start gap-4 p-4 bg-blue-50 dark:bg-gray-950 rounded-lg">
               <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center shrink-0">
                 <svg
                   className="w-5 h-5 text-green-600 dark:text-green-400"
@@ -104,7 +104,7 @@ export default function Contacto() {
               </div>
             </div>
 
-            <div className="flex items-start gap-4 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
+            <div className="flex items-start gap-4 p-4 bg-blue-50 dark:bg-gray-950 rounded-lg">
               <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center shrink-0">
                 <svg
                   className="w-5 h-5 text-blue-600 dark:text-blue-400"
@@ -129,7 +129,7 @@ export default function Contacto() {
               </div>
             </div>
 
-            <div className="flex items-start gap-4 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
+            <div className="flex items-start gap-4 p-4 bg-blue-50 dark:bg-gray-950 rounded-lg">
               <div className="w-10 h-10 bg-sky-100 dark:bg-sky-900 rounded-lg flex items-center justify-center shrink-0">
                 <svg
                   className="w-5 h-5 text-sky-600 dark:text-sky-400"
@@ -155,11 +155,11 @@ export default function Contacto() {
             </div>
           </div>
 
-          <div className="pt-6 border-t border-zinc-200 dark:border-zinc-700">
+          <div className="pt-6 border-t border-blue-200 dark:border-gray-700">
             <h3 className="font-semibold text-zinc-900 dark:text-white mb-3">
               Disponibilidad
             </h3>
-            <p className="text-zinc-600 dark:text-zinc-400">
+            <p className="text-gray-600 dark:text-gray-400">
               Actualmente estoy disponible para proyectos freelance y
               oportunidades de colaboración. Tiempo de respuesta habitual: 24-48
               horas.

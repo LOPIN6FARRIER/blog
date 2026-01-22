@@ -44,7 +44,7 @@ export default function VideoDetail({ post }: { post: VideoPost }) {
             <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-2">
               {post.title}
             </h1>
-            <div className="flex items-center gap-4 text-sm text-zinc-600 dark:text-zinc-400">
+            <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
               {post.createdAt && (
                 <time>{new Date(post.createdAt).toLocaleDateString()}</time>
               )}
@@ -92,8 +92,8 @@ export default function VideoDetail({ post }: { post: VideoPost }) {
 
         {/* Description */}
         {post.description && (
-          <div className="p-6 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl">
-            <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-line">
+          <div className="p-6 bg-blue-50 dark:bg-gray-900/50 rounded-xl">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
               {post.description}
             </p>
           </div>

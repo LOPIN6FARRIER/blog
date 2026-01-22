@@ -11,11 +11,11 @@ const AnnouncementCard: React.FC<AnnouncementPost> = ({
 }) => {
   const priorityConfig = {
     low: {
-      bg: "bg-zinc-100 dark:bg-zinc-700",
-      border: "border-zinc-200 dark:border-zinc-600",
+      bg: "bg-gray-100 dark:bg-gray-800",
+      border: "border-blue-200 dark:border-gray-600",
       icon: "info",
-      iconColor: "text-zinc-500",
-      badge: "bg-zinc-200 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-300",
+      iconColor: "text-gray-500",
+      badge: "bg-zinc-200 dark:bg-zinc-600 text-gray-700 dark:text-gray-300",
     },
     normal: {
       bg: "bg-blue-50 dark:bg-blue-900/20",
@@ -75,7 +75,7 @@ const AnnouncementCard: React.FC<AnnouncementPost> = ({
     <div className="masonry-item rounded-xl overflow-hidden relative hover:shadow-xl transition-shadow">
       <a
         href={`/posts/${id}`}
-        className="absolute top-3 right-3 z-10 p-2 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-zinc-700 transition-colors shadow-sm"
+        className="absolute top-3 right-3 z-10 p-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-gray-800 transition-colors shadow-sm"
         title="Ver detalles"
       >
         <svg
@@ -123,7 +123,7 @@ const AnnouncementCard: React.FC<AnnouncementPost> = ({
             </div>
           </div>
 
-          <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
             {content}
           </p>
 

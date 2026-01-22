@@ -26,7 +26,7 @@ export default function VideoCard(props: VideoPost & VideoCardProps) {
           </svg>
         </a>
         <div
-          className="w-full aspect-video rounded-t-xl bg-zinc-900 flex items-center justify-center relative"
+          className="w-full aspect-video rounded-t-xl bg-gray-950 flex items-center justify-center relative"
           style={{
             backgroundImage: post.video?.thumbnail
               ? `url('${post.video.thumbnail}')`
@@ -49,7 +49,7 @@ export default function VideoCard(props: VideoPost & VideoCardProps) {
             </div>
           )}
         </div>
-        <div className="p-6 bg-zinc-900 dark:bg-zinc-800">
+        <div className="p-6 bg-gray-950 dark:bg-gray-900">
           <h2 className="text-white text-2xl font-bold leading-tight mb-2">
             {post.title}
           </h2>
@@ -59,10 +59,10 @@ export default function VideoCard(props: VideoPost & VideoCardProps) {
             </p>
           )}
           <div className="flex justify-between items-center">
-            <span className="text-sm text-zinc-400 dark:text-zinc-500">
+            <span className="text-sm text-gray-400 dark:text-gray-500">
               {post.category}
             </span>
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
               Click para ver
             </span>
           </div>

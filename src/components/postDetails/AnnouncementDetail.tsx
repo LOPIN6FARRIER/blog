@@ -14,10 +14,10 @@ export default function AnnouncementDetail({
       label: "Información",
     },
     normal: {
-      bg: "bg-zinc-50 dark:bg-zinc-800/50",
-      border: "border-zinc-200 dark:border-zinc-700",
+      bg: "bg-blue-50 dark:bg-gray-900/50",
+      border: "border-blue-200 dark:border-gray-700",
       icon: "bg-zinc-600 dark:bg-zinc-500",
-      badge: "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300",
+      badge: "bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-300",
       label: "Normal",
     },
     high: {
@@ -77,14 +77,14 @@ export default function AnnouncementDetail({
 
         {/* Content */}
         {post.content && (
-          <div className="mb-6 text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          <div className="mb-6 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
             <p className="whitespace-pre-line">{post.content}</p>
           </div>
         )}
 
         {/* Date */}
         {post.createdAt && (
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
             Publicado el{" "}
             {new Date(post.createdAt).toLocaleDateString("es-ES", {
               year: "numeric",

@@ -1,16 +1,19 @@
 import { useState } from "react";
+import Masonry from "react-masonry-css";
 import type { GalleryPost } from "../../types/posts/post";
 
 export default function GalleryCard({ post }: { post: GalleryPost }) {
   const maxItems = 4;
   const [showAll, setShowAll] = useState(false);
-  const columnClass = {
-    2: "grid-cols-2",
-    3: "grid-cols-3",
-    4: "grid-cols-4",
-  }[post.columns || 2]; // Predeterminado a 2 columnas si no se especifica
 
   const visibleImages = showAll ? post.images : post.images.slice(0, maxItems);
+
+  // Configuración de breakpoints para Masonry según las columnas del post
+  const breakpointColumns = {
+    default: post.columns || 2,
+    1100: post.columns && post.columns > 2 ? 2 : post.columns || 2,
+    700: 1,
+  };
 
   return (
     <section>
@@ -24,7 +27,7 @@ export default function GalleryCard({ post }: { post: GalleryPost }) {
           </span>
           <a
             href={`/posts/${post.id}`}
-            className="p-2 bg-white dark:bg-zinc-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors shadow-sm border border-zinc-200 dark:border-zinc-700"
+            className="p-2 bg-white dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors shadow-sm border border-blue-200 dark:border-gray-700"
             title="Ver detalles"
           >
             <svg
@@ -39,7 +42,11 @@ export default function GalleryCard({ post }: { post: GalleryPost }) {
           </a>
         </div>
       </div>
-      <div className={`grid ${columnClass} gap-2`}>
+      <Masonry
+        breakpointCols={breakpointColumns}
+        className="my-masonry-grid"
+        columnClassName="my-masonry-grid_column"
+      >
         {visibleImages.map((image, index) => (
           <div
             key={index}
@@ -56,7 +63,7 @@ export default function GalleryCard({ post }: { post: GalleryPost }) {
             ></div>
           </div>
         ))}
-      </div>
+      </Masonry>
       {post.images.length > maxItems && (
         <div className="text-center mt-4">
           <button

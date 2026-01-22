@@ -13,22 +13,22 @@ export default function ThoughtDetail({ post }: { post: ThoughtPost }) {
             >
               <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z" />
             </svg>
-            <blockquote className="text-3xl md:text-4xl lg:text-5xl font-serif italic text-zinc-800 dark:text-zinc-200 mb-6 leading-relaxed">
+            <blockquote className="text-3xl md:text-4xl lg:text-5xl font-serif italic text-gray-800 dark:text-gray-200 mb-6 leading-relaxed">
               "{post.content}"
             </blockquote>
             {post.source && (
-              <p className="text-lg text-zinc-600 dark:text-zinc-400">
+              <p className="text-lg text-gray-600 dark:text-gray-400">
                 — {post.source}
               </p>
             )}
           </>
         ) : post.style === "note" ? (
           <div className="p-8 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 dark:border-yellow-600 rounded-r-xl">
-            <p className="text-2xl md:text-3xl font-light text-zinc-800 dark:text-zinc-200 leading-relaxed">
+            <p className="text-2xl md:text-3xl font-light text-gray-800 dark:text-gray-200 leading-relaxed">
               {post.content}
             </p>
             {post.source && (
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
                 {post.source}
               </p>
             )}
@@ -49,11 +49,11 @@ export default function ThoughtDetail({ post }: { post: ThoughtPost }) {
                 d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
               />
             </svg>
-            <p className="text-2xl md:text-3xl font-medium text-zinc-800 dark:text-zinc-200 leading-relaxed">
+            <p className="text-2xl md:text-3xl font-medium text-gray-800 dark:text-gray-200 leading-relaxed">
               {post.content}
             </p>
             {post.source && (
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
                 {post.source}
               </p>
             )}
@@ -66,7 +66,7 @@ export default function ThoughtDetail({ post }: { post: ThoughtPost }) {
             onClick={() => {
               navigator.clipboard.writeText(post.content);
             }}
-            className="px-6 py-3 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-lg font-medium transition-colors flex items-center gap-2"
+            className="px-6 py-3 bg-gray-100 dark:bg-gray-900 hover:bg-zinc-200 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors flex items-center gap-2"
           >
             <svg
               className="w-5 h-5"

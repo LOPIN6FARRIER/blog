@@ -18,7 +18,7 @@ interface FooterProps {
 
 export default function Footer({ name, year, socials, links }: FooterProps) {
   return (
-    <footer className="border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">
+    <footer className="border-t border-blue-200 dark:border-gray-900 bg-white dark:bg-zinc-950">
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Top section */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 mb-8">
@@ -27,7 +27,7 @@ export default function Footer({ name, year, socials, links }: FooterProps) {
             <span className="text-lg font-bold text-[#111418] dark:text-white">
               {name}
             </span>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-xs">
+            <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs">
               Building digital experiences with passion and precision.
             </p>
           </div>
@@ -39,7 +39,7 @@ export default function Footer({ name, year, socials, links }: FooterProps) {
                 <a
                   key={index}
                   href={link.href}
-                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-[#111418] dark:hover:text-white transition-colors"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-[#111418] dark:hover:text-white transition-colors"
                 >
                   {link.label}
                 </a>
@@ -49,12 +49,12 @@ export default function Footer({ name, year, socials, links }: FooterProps) {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-zinc-200 dark:border-zinc-800 my-6"></div>
+        <div className="border-t border-blue-200 dark:border-gray-900 my-6"></div>
 
         {/* Bottom section */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           {/* Copyright */}
-          <p className="text-xs text-zinc-500 dark:text-zinc-500">
+          <p className="text-xs text-gray-500 dark:text-gray-500">
             &copy; {year} {name}. All rights reserved.
           </p>
 
@@ -68,7 +68,7 @@ export default function Footer({ name, year, socials, links }: FooterProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-[#111418] dark:hover:text-white transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-zinc-200 dark:hover:bg-gray-800 hover:text-[#111418] dark:hover:text-white transition-colors"
                 >
                   <span className="material-symbols-outlined text-lg">
                     {social.icon}

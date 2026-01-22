@@ -1,0 +1,16 @@
+# robots.txt for vinicioesparza.dev
+
+User-agent: *
+Allow: /
+
+# Disallow admin/private pages
+Disallow: /login
+Disallow: /signup
+Disallow: /create
+Disallow: /edit/
+
+# Sitemap
+Sitemap: https://vinicioesparza.dev/sitemap.xml
+
+# Crawl delay (be nice to servers)
+Crawl-delay: 1

@@ -12,11 +12,11 @@ export default function GalleryDetail({ post }: { post: GalleryPost }) {
           {post.title}
         </h1>
         {post.description && (
-          <p className="text-lg text-zinc-600 dark:text-zinc-400">
+          <p className="text-lg text-gray-600 dark:text-gray-400">
             {post.description}
           </p>
         )}
-        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
           {post.images.length}{" "}
           {post.images.length === 1 ? "imagen" : "imágenes"}
         </p>
@@ -47,7 +47,7 @@ export default function GalleryDetail({ post }: { post: GalleryPost }) {
         >
           <button
             onClick={() => setSelectedIndex(null)}
-            className="absolute top-4 right-4 text-white hover:text-zinc-300 transition-colors"
+            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
           >
             <svg
               className="w-8 h-8"
@@ -71,7 +71,7 @@ export default function GalleryDetail({ post }: { post: GalleryPost }) {
                 e.stopPropagation();
                 setSelectedIndex(selectedIndex - 1);
               }}
-              className="absolute left-4 text-white hover:text-zinc-300 transition-colors"
+              className="absolute left-4 text-white hover:text-gray-300 transition-colors"
             >
               <svg
                 className="w-12 h-12"
@@ -106,7 +106,7 @@ export default function GalleryDetail({ post }: { post: GalleryPost }) {
                 e.stopPropagation();
                 setSelectedIndex(selectedIndex + 1);
               }}
-              className="absolute right-4 text-white hover:text-zinc-300 transition-colors"
+              className="absolute right-4 text-white hover:text-gray-300 transition-colors"
             >
               <svg
                 className="w-12 h-12"

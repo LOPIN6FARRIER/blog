@@ -26,11 +26,11 @@ export default function RankingDetail({ post }: { post: RankingPost }) {
           {post.title}
         </h1>
         {post.description && (
-          <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             {post.description}
           </p>
         )}
-        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-4">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
           {post.items.length} {post.items.length === 1 ? "item" : "items"}
         </p>
       </div>
@@ -42,7 +42,7 @@ export default function RankingDetail({ post }: { post: RankingPost }) {
           .map((item, index) => (
             <div
               key={index}
-              className="flex gap-6 p-6 bg-white dark:bg-zinc-800 rounded-xl shadow-md hover:shadow-lg transition-shadow border border-zinc-200 dark:border-zinc-700"
+              className="flex gap-6 p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-shadow border border-blue-200 dark:border-gray-700"
             >
               {/* Rank Number */}
               <div className="flex items-center justify-center w-16 h-16 shrink-0 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl">
@@ -89,7 +89,7 @@ export default function RankingDetail({ post }: { post: RankingPost }) {
                 </span>
 
                 {item.description && (
-                  <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                     {item.description}
                   </p>
                 )}

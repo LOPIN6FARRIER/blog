@@ -12,7 +12,7 @@ export default function CategoryChips({ routes }: { routes: HeaderRoutes[] }) {
             className={`flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full px-4 transition-all ${
               isActive
                 ? "bg-blue-600 text-white shadow-sm"
-                : "bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300"
+                : "bg-gray-100 dark:bg-gray-900 hover:bg-zinc-200 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
             }`}
           >
             <p

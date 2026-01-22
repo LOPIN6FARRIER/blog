@@ -4,9 +4,9 @@ export default function LinkDetail({ post }: { post: LinkPost }) {
   return (
     <article className="max-w-3xl mx-auto">
       {/* Preview Card */}
-      <div className="block mb-8 rounded-2xl overflow-hidden shadow-2xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
+      <div className="block mb-8 rounded-2xl overflow-hidden shadow-2xl bg-white dark:bg-gray-900 border border-blue-200 dark:border-gray-700">
         {post.image && (
-          <div className="aspect-[2/1] w-full bg-zinc-100 dark:bg-zinc-900">
+          <div className="aspect-[2/1] w-full bg-gray-100 dark:bg-gray-950">
             <img
               src={post.image.url}
               alt={post.image.alt}
@@ -20,7 +20,7 @@ export default function LinkDetail({ post }: { post: LinkPost }) {
               <img src={post.favicon} alt="" className="w-6 h-6" />
             )}
             {post.siteName && (
-              <span className="text-sm text-zinc-500 dark:text-zinc-400">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
                 {post.siteName}
               </span>
             )}
@@ -29,7 +29,7 @@ export default function LinkDetail({ post }: { post: LinkPost }) {
             {post.title}
           </h1>
           {post.description && (
-            <p className="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mb-4">
+            <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
               {post.description}
             </p>
           )}
@@ -63,7 +63,7 @@ export default function LinkDetail({ post }: { post: LinkPost }) {
           {post.tags.map((tag) => (
             <span
               key={tag}
-              className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-full text-sm"
+              className="px-3 py-1 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 rounded-full text-sm"
             >
               #{tag}
             </span>

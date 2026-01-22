@@ -14,7 +14,7 @@ export default function ProjectCard(props: ProjectPost) {
         className="relative bg-cover bg-center flex flex-col items-stretch justify-end rounded-xl overflow-hidden min-h-105 shadow-sm hover:shadow-xl transition-shadow"
         data-alt={props.coverImage?.alt || "Hero Image"}
         style={{
-          backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 60%), url('${props.coverImage?.url}')`,
+          backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0.1) 70%, rgba(0, 0, 0, 0) 100%), url('${props.coverImage?.url}')`,
         }}
       >
         <a
@@ -32,9 +32,9 @@ export default function ProjectCard(props: ProjectPost) {
             <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
           </svg>
         </a>
-        <div className="p-6">
+        <div className="p-6 bg-gradient-to-t from-black/60 via-black/40 to-transparent backdrop-blur-md">
           {props.status && (
-            <span className="inline-block px-2 py-1 bg-primary text-white text-[10px] font-bold uppercase tracking-widest rounded mb-3">
+            <span className="inline-block px-2 py-1 bg-primary text-white text-[10px] font-bold uppercase tracking-widest rounded mb-3 shadow-md">
               {props.status === "completed"
                 ? "Completed"
                 : props.status === "in-progress"
@@ -42,11 +42,11 @@ export default function ProjectCard(props: ProjectPost) {
                   : "Archived"}
             </span>
           )}
-          <h2 className="text-white text-3xl font-bold leading-tight mb-2">
+          <h2 className="text-white text-3xl font-bold leading-tight mb-2 drop-shadow-lg">
             {props.title}
           </h2>
           {props.description && (
-            <p className="text-white/90 text-base font-normal mb-4">
+            <p className="text-white/95 text-base font-normal mb-4 drop-shadow-md leading-relaxed">
               {props.description}
             </p>
           )}

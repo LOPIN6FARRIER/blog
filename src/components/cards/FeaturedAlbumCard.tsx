@@ -46,11 +46,16 @@ export default function FeaturedAlbumCard({
         <div className="flex flex-col gap-4 p-5">
           <div>
             <p className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-1">
-              Now Playing
+              {post.musicType === "album" ? "Album" : "Now Playing"}
             </p>
             <p className="text-[#111418] dark:text-white text-xl font-bold leading-tight">
               {post.audio.title}
             </p>
+            {post.musicType === "album" && post.totalTracks && (
+              <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">
+                {post.totalTracks} canciones
+              </p>
+            )}
           </div>
           <div className="flex items-center justify-between border-t border-gray-100 dark:border-gray-800 pt-4">
             <div className="flex flex-col">
@@ -64,23 +69,33 @@ export default function FeaturedAlbumCard({
                   Album: {post.audio.album}
                 </p>
               )}
+              {post.musicType === "album" && post.releaseDate && (
+                <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">
+                  {new Date(post.releaseDate).getFullYear()}
+                </p>
+              )}
             </div>
-            <button
-              onClick={onTogglePlay}
-              className="flex size-12 cursor-pointer items-center justify-center rounded-full bg-primary text-white shadow-lg active:scale-95 transition-transform"
-            >
-              <span className="material-symbols-outlined fill-1">
-                {isPlaying ? "pause" : "play_arrow"}
-              </span>
-            </button>
+            {/* Only show play button for tracks, not albums */}
+            {post.musicType !== "album" && (
+              <button
+                onClick={onTogglePlay}
+                className="flex size-12 cursor-pointer items-center justify-center rounded-full bg-primary text-white shadow-lg active:scale-95 transition-transform"
+              >
+                <span className="material-symbols-outlined fill-1">
+                  {isPlaying ? "pause" : "play_arrow"}
+                </span>
+              </button>
+            )}
           </div>
-          {/* Playback progress indicator */}
-          <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
-            <div
-              className="bg-primary h-1.5 rounded-full"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
+          {/* Playback progress indicator - only for tracks */}
+          {post.musicType !== "album" && (
+            <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+              <div
+                className="bg-primary h-1.5 rounded-full"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          )}
         </div>
       </div>
     </div>

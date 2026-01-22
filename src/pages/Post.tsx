@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { usePosts } from "../Api/usePosts";
 import Layout from "../layouts/Layout";
+import SEO from "../components/SEO";
+import StructuredData from "../components/StructuredData";
 import type { Post } from "../types/posts/post";
 
 // Import all detail components
@@ -25,6 +27,36 @@ export default function Post() {
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Helper function to get post description
+  const getPostDescription = (post: Post): string => {
+    if (post.type === "article") return post.excerpt || "";
+    if (post.type === "project") return post.description || "";
+    if (post.type === "thought") return post.content?.substring(0, 160) || "";
+    if (post.type === "video") return post.description || "";
+    if (post.type === "music") return post.description || "";
+    if (post.type === "event") return post.description || "";
+    if (post.type === "link") return post.description || "";
+    if (post.type === "announcement") return post.content || "";
+    return post.title;
+  };
+
+  // Helper function to get post image
+  const getPostImage = (post: Post): string => {
+    if (post.type === "article" && post.coverImage?.url)
+      return post.coverImage.url;
+    if (post.type === "project" && post.coverImage?.url)
+      return post.coverImage.url;
+    if (post.type === "photo" && post.imageUrl) return post.imageUrl;
+    if (post.type === "video" && post.thumbnailUrl) return post.thumbnailUrl;
+    if (post.type === "music" && post.audio?.coverUrl)
+      return post.audio.coverUrl;
+    if (post.type === "event" && post.coverImage?.url)
+      return post.coverImage.url;
+    if (post.type === "gallery" && post.images?.[0]?.url)
+      return post.images[0].url;
+    return "/icono.png";
+  };
 
   useEffect(() => {
     if (!id) {
@@ -59,7 +91,7 @@ export default function Post() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-zinc-600 dark:text-zinc-400">Loading post...</p>
+            <p className="text-gray-600 dark:text-gray-400">Loading post...</p>
           </div>
         </div>
       </Layout>
@@ -75,7 +107,7 @@ export default function Post() {
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
               Oops!
             </h2>
-            <p className="text-zinc-600 dark:text-zinc-400">{error}</p>
+            <p className="text-gray-600 dark:text-gray-400">{error}</p>
           </div>
         </div>
       </Layout>
@@ -91,7 +123,7 @@ export default function Post() {
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
               Post not found
             </h2>
-            <p className="text-zinc-600 dark:text-zinc-400">
+            <p className="text-gray-600 dark:text-gray-400">
               The post you're looking for doesn't exist.
             </p>
           </div>
@@ -131,7 +163,7 @@ export default function Post() {
       default:
         return (
           <div className="text-center py-16">
-            <p className="text-zinc-600 dark:text-zinc-400">
+            <p className="text-gray-600 dark:text-gray-400">
               Unknown post type: {post.type}
             </p>
           </div>
@@ -139,5 +171,34 @@ export default function Post() {
     }
   };
 
-  return <Layout>{renderPostContent()}</Layout>;
+  return (
+    <Layout>
+      <SEO
+        title={post.title}
+        description={getPostDescription(post)}
+        image={getPostImage(post)}
+        url={`https://vinicioesparza.dev/post/${post.slug}`}
+        type="article"
+        publishedTime={post.publishedAt}
+        modifiedTime={post.updatedAt}
+        keywords={post.tags?.join(", ")}
+      />
+      {(post.type === "article" || post.type === "project") && (
+        <StructuredData
+          type={post.type === "article" ? "BlogPosting" : "Article"}
+          data={{
+            headline: post.title,
+            image: getPostImage(post),
+            datePublished: post.publishedAt,
+            dateModified: post.updatedAt,
+            description: getPostDescription(post),
+            keywords: post.tags?.join(", "),
+            articleSection: post.category || post.type,
+            articleBody: getPostDescription(post),
+          }}
+        />
+      )}
+      {renderPostContent()}
+    </Layout>
+  );
 }

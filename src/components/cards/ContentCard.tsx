@@ -7,10 +7,10 @@ export default function ContentCard(props: ArticlePost) {
   const toggleDescription = () => setIsExpanded(!isExpanded);
 
   return (
-    <div className="col-span-2 p-4 bg-white dark:bg-zinc-800 rounded-xl border border-zinc-100 dark:border-zinc-800 shadow-sm flex flex-col @container relative hover:shadow-lg transition-shadow">
+    <div className="col-span-2 p-4 bg-white dark:bg-gray-900 rounded-xl border border-blue-200 dark:border-gray-900 shadow-sm flex flex-col @container relative hover:shadow-lg transition-shadow">
       <a
         href={`/posts/${props.id}`}
-        className="absolute top-3 right-3 z-10 p-2 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-zinc-700 transition-colors shadow-sm"
+        className="absolute top-3 right-3 z-10 p-2 bg-white/80 dark:bg-gray-950/80 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-gray-800 transition-colors shadow-sm"
         title="Ver detalles"
       >
         <svg
@@ -40,7 +40,7 @@ export default function ContentCard(props: ArticlePost) {
             {props.readTime && (
               <>
                 <span className="size-1 rounded-full bg-zinc-300"></span>
-                <span className="text-[#617589] dark:text-zinc-500 text-[10px] font-bold uppercase tracking-widest">
+                <span className="text-[#617589] dark:text-gray-500 text-[10px] font-bold uppercase tracking-widest">
                   {props.readTime}
                 </span>
               </>
@@ -49,7 +49,7 @@ export default function ContentCard(props: ArticlePost) {
           {props.excerpt && (
             <>
               <p
-                className={`text-zinc-600 dark:text-zinc-400 text-sm mt-2 font-medium ${
+                className={`text-gray-600 dark:text-gray-400 text-sm mt-2 font-medium ${
                   isExpanded ? "line-clamp-none" : "line-clamp-2"
                 }`}
               >

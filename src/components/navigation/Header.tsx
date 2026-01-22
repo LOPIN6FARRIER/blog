@@ -15,15 +15,8 @@ export default function Header({ routes }: { routes: HeaderRoutes[] }) {
   };
 
   return (
-    <header className="sticky top-0 z-50 safe-top bg-white/80 dark:bg-zinc-900/80 backdrop-blur-lg border-b border-zinc-200 dark:border-zinc-800">
+    <header className="sticky top-0 z-50 safe-top bg-white/90 dark:bg-gray-950/90 backdrop-blur-xl border-b-2 border-blue-200 dark:border-gray-800 shadow-sm">
       <div className="flex items-center gap-4 max-w-7xl mx-auto px-4 py-4 pb-5">
-        {/* Logo/Brand */}
-        <a href="/" className="shrink-0">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-base">VE</span>
-          </div>
-        </a>
-
         {/* Navigation */}
         <div className="flex-1 min-w-0">
           <CategoryChips routes={routes} />
@@ -34,7 +27,7 @@ export default function Header({ routes }: { routes: HeaderRoutes[] }) {
           <div className="relative shrink-0">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors"
             >
               <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center shrink-0">
                 <span className="text-white font-semibold text-sm">
@@ -63,12 +56,12 @@ export default function Header({ routes }: { routes: HeaderRoutes[] }) {
                   className="fixed inset-0 z-40"
                   onClick={() => setShowUserMenu(false)}
                 />
-                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-zinc-800 rounded-lg shadow-lg border border-zinc-200 dark:border-zinc-700 py-2 z-50">
-                  <div className="px-4 py-2 border-b border-zinc-200 dark:border-zinc-700">
+                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-blue-200 dark:border-gray-700 py-2 z-50">
+                  <div className="px-4 py-2 border-b border-blue-200 dark:border-gray-700">
                     <p className="text-sm font-semibold text-zinc-900 dark:text-white">
                       {user.full_name || user.username}
                     </p>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       {user.email}
                     </p>
                     {isAdmin() && (
@@ -81,7 +74,7 @@ export default function Header({ routes }: { routes: HeaderRoutes[] }) {
                   {isAdmin() && (
                     <a
                       href="/create-post"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                       onClick={() => setShowUserMenu(false)}
                     >
                       <svg

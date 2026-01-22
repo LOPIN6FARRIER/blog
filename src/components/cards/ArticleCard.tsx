@@ -4,7 +4,7 @@ export default function ArticleCard(props: ArticlePost) {
     <div className="masonry-item bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm relative hover:shadow-lg transition-shadow">
       <a
         href={`/posts/${props.id}`}
-        className="absolute top-3 right-3 z-10 p-2 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-zinc-700 transition-colors shadow-sm"
+        className="absolute top-3 right-3 z-10 p-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-gray-800 transition-colors shadow-sm"
         title="Ver detalles"
       >
         <svg

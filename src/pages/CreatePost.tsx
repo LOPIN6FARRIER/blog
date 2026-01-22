@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import Layout from "../layouts/Layout";
+import SEO from "../components/SEO";
 import FeedRenderer from "../components/Ui/FeedRenderer";
 import ImageUpload from "../components/Ui/ImageUpload";
 import MultiImageUpload from "../components/Ui/MultiImageUpload";
@@ -28,7 +29,13 @@ const postTypes: PostTypeOption[] = [
 ];
 
 const CreatePost = () => {
-  const { createPost, uploadPostImage, uploadPostImages, loading } = usePosts();
+  const {
+    createPost,
+    createMusicPostFromSpotify,
+    uploadPostImage,
+    uploadPostImages,
+    loading,
+  } = usePosts();
 
   // Base fields
   const [type, setType] = useState<PostType>("article");
@@ -36,6 +43,8 @@ const CreatePost = () => {
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
+  const [category, setCategory] = useState("");
+  const [importingFromSpotify, setImportingFromSpotify] = useState(false);
 
   // Article fields
   const [articleCoverUrl, setArticleCoverUrl] = useState("");
@@ -73,6 +82,13 @@ const CreatePost = () => {
   const [audioCoverUrl, setAudioCoverUrl] = useState("");
   const [audioCoverFile, setAudioCoverFile] = useState<File | null>(null);
   const [audioUseUpload, setAudioUseUpload] = useState(false);
+  const [musicDescription, setMusicDescription] = useState("");
+  const [musicType, setMusicType] = useState<"track" | "album">("track");
+  const [spotifyUrl, setSpotifyUrl] = useState("");
+  const [appleMusicUrl, setAppleMusicUrl] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [releaseDate, setReleaseDate] = useState("");
+  const [totalTracks, setTotalTracks] = useState("");
 
   // Thought fields
   const [thoughtContent, setThoughtContent] = useState("");
@@ -249,6 +265,13 @@ const CreatePost = () => {
               ? URL.createObjectURL(audioCoverFile)
               : audioCoverUrl,
           },
+          description: musicDescription,
+          musicType: musicType,
+          spotifyUrl: spotifyUrl,
+          appleMusicUrl: appleMusicUrl,
+          youtubeUrl: youtubeUrl,
+          releaseDate: releaseDate,
+          totalTracks: totalTracks ? parseInt(totalTracks) : undefined,
         } as Post;
         break;
       case "thought":
@@ -459,6 +482,13 @@ const CreatePost = () => {
     audioDuration,
     audioCoverUrl,
     audioCoverFile,
+    musicDescription,
+    musicType,
+    spotifyUrl,
+    appleMusicUrl,
+    youtubeUrl,
+    releaseDate,
+    totalTracks,
     thoughtContent,
     thoughtSource,
     thoughtStyle,
@@ -799,7 +829,7 @@ const CreatePost = () => {
   };
 
   const inputClass =
-    "w-full rounded p-2 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 mt-1";
+    "w-full rounded p-2 border border-blue-200 dark:border-gray-700 bg-white dark:bg-gray-900 mt-1";
   const labelClass = "block text-sm font-medium";
 
   const renderImageUploadSection = (
@@ -811,7 +841,7 @@ const CreatePost = () => {
     file: File | null,
     setFile: (f: File | null) => void,
   ) => (
-    <div className="border-t border-zinc-200 dark:border-zinc-700 pt-3 mt-3">
+    <div className="border-t border-blue-200 dark:border-gray-700 pt-3 mt-3">
       <p className="text-sm font-medium mb-2">{label}</p>
       <div className="flex items-center gap-4 mb-2">
         <label className="flex items-center gap-2 cursor-pointer">
@@ -861,6 +891,11 @@ const CreatePost = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Create Post - Vinicio Esparza"
+        description="Crear una nueva publicación en el blog de Vinicio Esparza"
+        type="website"
+      />
       <h1 className="text-3xl font-bold mb-6">Crear Post</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -927,8 +962,8 @@ const CreatePost = () => {
 
           {/* Type-specific fields */}
           {type === "article" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Article Fields
               </h4>
               {renderImageUploadSection(
@@ -963,8 +998,8 @@ const CreatePost = () => {
           )}
 
           {type === "photo" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Photo Fields
               </h4>
               {renderImageUploadSection(
@@ -1039,8 +1074,8 @@ const CreatePost = () => {
           )}
 
           {type === "gallery" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Gallery Fields
               </h4>
 
@@ -1133,10 +1168,78 @@ const CreatePost = () => {
           )}
 
           {type === "music" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Music Fields
               </h4>
+
+              {/* Quick Import from Spotify */}
+              <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                <label className={labelClass + " mb-2"}>
+                  🎵 Quick Import from Spotify
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Paste Spotify URL (track or album)"
+                    className={inputClass + " flex-1"}
+                    id="spotifyImportUrl"
+                  />
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      const input = document.getElementById(
+                        "spotifyImportUrl",
+                      ) as HTMLInputElement;
+                      const url = input.value.trim();
+                      if (!url) {
+                        alert("Please paste a Spotify URL");
+                        return;
+                      }
+
+                      try {
+                        setImportingFromSpotify(true);
+                        await createMusicPostFromSpotify({
+                          url,
+                          title,
+                          tags: tags
+                            .split(",")
+                            .map((t) => t.trim())
+                            .filter(Boolean),
+                          category,
+                          status: "draft",
+                        });
+                        alert("Music post created successfully from Spotify!");
+                        // Optionally reset form or redirect
+                      } catch (error) {
+                        alert("Failed to import from Spotify: " + error);
+                      } finally {
+                        setImportingFromSpotify(false);
+                      }
+                    }}
+                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                    disabled={importingFromSpotify}
+                  >
+                    {importingFromSpotify ? "Importing..." : "Import"}
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Automatically fills all fields from Spotify (track info,
+                  cover, release date, etc.)
+                </p>
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
+                </div>
+                <div className="relative flex justify-center text-xs">
+                  <span className="px-2 bg-blue-50 dark:bg-gray-900/50 text-gray-500">
+                    Or fill manually
+                  </span>
+                </div>
+              </div>
+
               <div>
                 <label className={labelClass}>Audio URL</label>
                 <input
@@ -1205,12 +1308,88 @@ const CreatePost = () => {
                 audioCoverFile,
                 setAudioCoverFile,
               )}
+              <div>
+                <label className={labelClass}>Description</label>
+                <textarea
+                  value={musicDescription}
+                  onChange={(e) => setMusicDescription(e.target.value)}
+                  rows={3}
+                  placeholder="Descripción de la canción o álbum"
+                  className={inputClass}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className={labelClass}>Music Type</label>
+                  <select
+                    value={musicType}
+                    onChange={(e) =>
+                      setMusicType(e.target.value as "track" | "album")
+                    }
+                    className={inputClass}
+                  >
+                    <option value="track">Track</option>
+                    <option value="album">Album</option>
+                  </select>
+                </div>
+                <div>
+                  <label className={labelClass}>Total Tracks (if album)</label>
+                  <input
+                    type="number"
+                    value={totalTracks}
+                    onChange={(e) => setTotalTracks(e.target.value)}
+                    placeholder="10"
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className={labelClass}>Release Date</label>
+                <input
+                  type="date"
+                  value={releaseDate}
+                  onChange={(e) => setReleaseDate(e.target.value)}
+                  className={inputClass}
+                />
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <label className={labelClass}>Spotify URL</label>
+                  <input
+                    type="text"
+                    value={spotifyUrl}
+                    onChange={(e) => setSpotifyUrl(e.target.value)}
+                    placeholder="https://open.spotify.com/..."
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className={labelClass}>Apple Music URL</label>
+                  <input
+                    type="text"
+                    value={appleMusicUrl}
+                    onChange={(e) => setAppleMusicUrl(e.target.value)}
+                    placeholder="https://music.apple.com/..."
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className={labelClass}>YouTube URL</label>
+                  <input
+                    type="text"
+                    value={youtubeUrl}
+                    onChange={(e) => setYoutubeUrl(e.target.value)}
+                    placeholder="https://youtube.com/..."
+                    className={inputClass}
+                  />
+                </div>
+              </div>
             </div>
           )}
 
           {type === "thought" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Thought Fields
               </h4>
               <div>
@@ -1249,8 +1428,8 @@ const CreatePost = () => {
           )}
 
           {type === "video" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Video Fields
               </h4>
               <div>
@@ -1312,8 +1491,8 @@ const CreatePost = () => {
           )}
 
           {type === "project" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Project Fields
               </h4>
               <div>
@@ -1409,8 +1588,8 @@ const CreatePost = () => {
           )}
 
           {type === "link" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Link Fields
               </h4>
               <div>
@@ -1464,8 +1643,8 @@ const CreatePost = () => {
           )}
 
           {type === "announcement" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Announcement Fields
               </h4>
               <div>
@@ -1518,8 +1697,8 @@ const CreatePost = () => {
           )}
 
           {type === "event" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Event Fields
               </h4>
               <div>
@@ -1621,8 +1800,8 @@ const CreatePost = () => {
           )}
 
           {type === "recommendation" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Recommendation Fields
               </h4>
               <div>
@@ -1699,11 +1878,11 @@ const CreatePost = () => {
                   id="compactCheck"
                   checked={compact}
                   onChange={(e) => setCompact(e.target.checked)}
-                  className="w-4 h-4 text-blue-600 bg-zinc-100 border-zinc-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-zinc-800 focus:ring-2 dark:bg-zinc-700 dark:border-zinc-600"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-zinc-800 focus:ring-2 dark:bg-gray-800 dark:border-gray-600"
                 />
                 <label
                   htmlFor="compactCheck"
-                  className="text-sm font-medium text-zinc-700 dark:text-zinc-300"
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                   Compact view (smaller card)
                 </label>
@@ -1721,8 +1900,8 @@ const CreatePost = () => {
           )}
 
           {type === "rating" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Rating Fields
               </h4>
               <div>
@@ -1807,8 +1986,8 @@ const CreatePost = () => {
           )}
 
           {type === "ranking" && (
-            <div className="space-y-3 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <h4 className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-gray-900/50 rounded-lg">
+              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Ranking Fields
               </h4>
               <div>
@@ -1823,14 +2002,14 @@ const CreatePost = () => {
               </div>
 
               {/* Toggle entre editor visual y JSON */}
-              <div className="flex items-center gap-4 p-3 bg-white dark:bg-zinc-900 rounded border border-zinc-200 dark:border-zinc-700">
+              <div className="flex items-center gap-4 p-3 bg-white dark:bg-gray-950 rounded border border-blue-200 dark:border-gray-700">
                 <button
                   type="button"
                   onClick={() => setRankingUseVisualEditor(true)}
                   className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
                     rankingUseVisualEditor
                       ? "bg-blue-500 text-white"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
+                      : "bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300"
                   }`}
                 >
                   Editor Visual
@@ -1841,7 +2020,7 @@ const CreatePost = () => {
                   className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
                     !rankingUseVisualEditor
                       ? "bg-blue-500 text-white"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
+                      : "bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300"
                   }`}
                 >
                   JSON
@@ -1855,12 +2034,12 @@ const CreatePost = () => {
                     {rankingItems.map((item, index) => (
                       <div
                         key={index}
-                        className="p-3 bg-white dark:bg-zinc-900 rounded border border-zinc-200 dark:border-zinc-700 space-y-2"
+                        className="p-3 bg-white dark:bg-gray-950 rounded border border-blue-200 dark:border-gray-700 space-y-2"
                       >
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex-1 grid grid-cols-2 gap-2">
                             <div>
-                              <label className="text-xs text-zinc-500 dark:text-zinc-400">
+                              <label className="text-xs text-gray-500 dark:text-gray-400">
                                 Rank
                               </label>
                               <input
@@ -1877,7 +2056,7 @@ const CreatePost = () => {
                               />
                             </div>
                             <div>
-                              <label className="text-xs text-zinc-500 dark:text-zinc-400">
+                              <label className="text-xs text-gray-500 dark:text-gray-400">
                                 Tipo
                               </label>
                               <select
@@ -1898,7 +2077,7 @@ const CreatePost = () => {
                               </select>
                             </div>
                             <div className="col-span-2">
-                              <label className="text-xs text-zinc-500 dark:text-zinc-400">
+                              <label className="text-xs text-gray-500 dark:text-gray-400">
                                 Título
                               </label>
                               <input
@@ -1914,7 +2093,7 @@ const CreatePost = () => {
                               />
                             </div>
                             <div>
-                              <label className="text-xs text-zinc-500 dark:text-zinc-400">
+                              <label className="text-xs text-gray-500 dark:text-gray-400">
                                 Rating (opcional)
                               </label>
                               <input
@@ -1933,7 +2112,7 @@ const CreatePost = () => {
                               />
                             </div>
                             <div className="col-span-2">
-                              <label className="text-xs text-zinc-500 dark:text-zinc-400">
+                              <label className="text-xs text-gray-500 dark:text-gray-400">
                                 Descripción (opcional)
                               </label>
                               <textarea
@@ -2022,7 +2201,7 @@ const CreatePost = () => {
                     placeholder='[{"rank":1,"subjectTitle":"Breaking Bad","itemType":"serie","rating":9.5,"description":"La mejor serie"}]'
                     className={`${inputClass} font-mono text-xs`}
                   />
-                  <p className="text-xs text-zinc-500 mt-1">
+                  <p className="text-xs text-gray-500 mt-1">
                     Formato: Array de objetos con rank, subjectTitle, itemType,
                     rating (opcional), description (opcional)
                   </p>
@@ -2053,7 +2232,7 @@ const CreatePost = () => {
             <button
               type="button"
               onClick={resetForm}
-              className="px-4 py-2 rounded border border-zinc-300 dark:border-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="px-4 py-2 rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-900"
             >
               Reset
             </button>
@@ -2070,13 +2249,13 @@ const CreatePost = () => {
         <div>
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-lg font-semibold">Vista previa</h3>
-            <span className="text-sm text-zinc-500">Tipo: {type}</span>
+            <span className="text-sm text-gray-500">Tipo: {type}</span>
           </div>
 
-          <div className="rounded-xl p-4 border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+          <div className="rounded-xl p-4 border border-blue-200 dark:border-gray-900 bg-white dark:bg-gray-950">
             <h1 className="text-xl font-bold mb-1">{title || "Sin título"}</h1>
             {excerpt && (
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                 {excerpt}
               </p>
             )}

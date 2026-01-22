@@ -65,7 +65,7 @@ export default function RatingDetail({ post }: { post: RatingPost }) {
                   <span className="text-5xl font-bold text-zinc-900 dark:text-white">
                     {post.rating.toFixed(1)}
                   </span>
-                  <span className="text-zinc-600 dark:text-zinc-400 text-sm">
+                  <span className="text-gray-600 dark:text-gray-400 text-sm">
                     /10
                   </span>
                 </div>
@@ -110,11 +110,11 @@ export default function RatingDetail({ post }: { post: RatingPost }) {
 
       {/* Comment/Review */}
       {post.comment && (
-        <div className="p-8 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-700">
+        <div className="p-8 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-blue-200 dark:border-gray-700">
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">
             Mi Opinión
           </h2>
-          <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-line">
+          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
             {post.comment}
           </p>
         </div>

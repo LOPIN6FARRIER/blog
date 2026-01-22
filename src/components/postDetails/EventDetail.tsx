@@ -36,7 +36,7 @@ export default function EventDetail({ post }: { post: EventPost }) {
           {post.title}
         </h1>
         {post.description && (
-          <p className="text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed">
+          <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
             {post.description}
           </p>
         )}
@@ -67,10 +67,10 @@ export default function EventDetail({ post }: { post: EventPost }) {
                 <h3 className="font-semibold text-zinc-900 dark:text-white mb-2">
                   Fecha y Hora
                 </h3>
-                <p className="text-zinc-700 dark:text-zinc-300">
+                <p className="text-gray-700 dark:text-gray-300">
                   {formatDate(post.startDate)}
                 </p>
-                <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+                <p className="text-gray-600 dark:text-gray-400 text-sm">
                   {formatTime(post.startDate)}
                   {post.endDate && ` - ${formatTime(post.endDate)}`}
                 </p>
@@ -108,11 +108,11 @@ export default function EventDetail({ post }: { post: EventPost }) {
                 <h3 className="font-semibold text-zinc-900 dark:text-white mb-2">
                   Ubicación
                 </h3>
-                <p className="text-zinc-700 dark:text-zinc-300">
+                <p className="text-gray-700 dark:text-gray-300">
                   {post.location.name}
                 </p>
                 {post.location.address && (
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">
                     {post.location.address}
                   </p>
                 )}
@@ -154,7 +154,7 @@ export default function EventDetail({ post }: { post: EventPost }) {
                 <h3 className="font-semibold text-zinc-900 dark:text-white mb-2">
                   Precio
                 </h3>
-                <p className="text-zinc-700 dark:text-zinc-300 text-lg font-semibold">
+                <p className="text-gray-700 dark:text-gray-300 text-lg font-semibold">
                   {post.price}
                 </p>
               </div>
@@ -185,7 +185,7 @@ export default function EventDetail({ post }: { post: EventPost }) {
                 <h3 className="font-semibold text-zinc-900 dark:text-white mb-2">
                   Capacidad
                 </h3>
-                <p className="text-zinc-700 dark:text-zinc-300 text-lg font-semibold">
+                <p className="text-gray-700 dark:text-gray-300 text-lg font-semibold">
                   {post.capacity} personas
                 </p>
               </div>
@@ -198,7 +198,7 @@ export default function EventDetail({ post }: { post: EventPost }) {
       {post.content && (
         <div className="mb-8 prose prose-lg dark:prose-invert max-w-none">
           <div
-            className="text-zinc-700 dark:text-zinc-300 leading-relaxed"
+            className="text-gray-700 dark:text-gray-300 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </div>

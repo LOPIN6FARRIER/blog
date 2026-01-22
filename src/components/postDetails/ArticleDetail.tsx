@@ -26,7 +26,7 @@ export default function ArticleDetail({ post }: { post: ArticlePost }) {
         </h1>
 
         {/* Metadata */}
-        <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-600 dark:text-zinc-400">
+        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
           {post.author && (
             <div className="flex items-center gap-2">
               <span className="font-medium">{post.author.name}</span>
@@ -60,7 +60,7 @@ export default function ArticleDetail({ post }: { post: ArticlePost }) {
       {post.content && (
         <div className="prose prose-lg dark:prose-invert max-w-none mb-8">
           <div
-            className="text-zinc-700 dark:text-zinc-300 leading-relaxed"
+            className="text-gray-700 dark:text-gray-300 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </div>
@@ -68,11 +68,11 @@ export default function ArticleDetail({ post }: { post: ArticlePost }) {
 
       {/* Tags */}
       {post.tags && post.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 pt-8 border-t border-zinc-200 dark:border-zinc-700">
+        <div className="flex flex-wrap gap-2 pt-8 border-t border-blue-200 dark:border-gray-700">
           {post.tags.map((tag, index) => (
             <span
               key={index}
-              className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm rounded-full"
+              className="px-3 py-1 bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 text-sm rounded-full"
             >
               #{tag}
             </span>

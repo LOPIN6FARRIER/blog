@@ -135,6 +135,44 @@ export const usePosts = (params?: PostsQueryParams) => {
     }
   };
 
+  // Función para crear un post de música desde URL de Spotify
+  const createMusicPostFromSpotify = async (data: {
+    url: string;
+    title?: string;
+    tags?: string[];
+    category?: string;
+    status?: "draft" | "published";
+    market?: string;
+  }) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetchWithAuth(
+        `${API_URL}/api/posts/from-spotify`,
+        {
+          method: "POST",
+          data: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      const result = await response.data;
+      if (result.success) {
+        setPosts((prevPosts) => [...prevPosts, result.data]);
+        return result.data;
+      }
+      throw new Error(
+        result.message || "Failed to create music post from Spotify",
+      );
+    } catch (err: unknown) {
+      setError("Failed to create music post from Spotify: " + String(err));
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Función para subir una imagen a un post
   const uploadPostImage = async (postId: string, file: File) => {
     const formData = new FormData();
@@ -208,6 +246,60 @@ export const usePosts = (params?: PostsQueryParams) => {
     [],
   );
 
+  // Función para actualizar un post
+  const updatePost = async (postId: string, updates: Partial<Post>) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetchWithAuth(`${API_URL}/api/posts/${postId}`, {
+        method: "PUT",
+        data: JSON.stringify(updates),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.data;
+      if (data.success) {
+        // Actualizar el post en el estado local
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, ...data.data } : post,
+          ),
+        );
+        return data.data;
+      }
+      throw new Error("Failed to update post");
+    } catch (err: unknown) {
+      setError("Failed to update post: " + String(err));
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Función para eliminar un post
+  const deletePost = async (postId: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetchWithAuth(`${API_URL}/api/posts/${postId}`, {
+        method: "DELETE",
+      });
+      const data = await response.data;
+      if (data.success) {
+        // Eliminar el post del estado local
+        setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+        return true;
+      }
+      throw new Error("Failed to delete post");
+    } catch (err: unknown) {
+      setError("Failed to delete post: " + String(err));
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     posts,
     loading,
@@ -219,6 +311,9 @@ export const usePosts = (params?: PostsQueryParams) => {
     fetchPosts,
     fetchPostById,
     createPost,
+    createMusicPostFromSpotify,
+    updatePost,
+    deletePost,
     uploadPostImage,
     uploadPostImages,
   };

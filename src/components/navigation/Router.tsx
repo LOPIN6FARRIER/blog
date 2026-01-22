@@ -10,6 +10,7 @@ import Projects from "../../pages/Projects";
 import Events from "../../pages/Events";
 import Links from "../../pages/Links";
 import CreatePost from "../../pages/CreatePost";
+
 import Announcements from "../../pages/Announcements";
 import Post from "../../pages/Post";
 import NotFound from "../../pages/NotFound";
@@ -19,6 +20,7 @@ import Login from "../../pages/Login";
 import SignUp from "../../pages/SignUp";
 import Entertainment from "../../pages/Entertainment";
 import Contacto from "../../pages/Contacto";
+import EditPost from "../../pages/EditPost";
 
 function ProtectedRoute({ children }: { children: ReactElement }) {
   const user = useUserStore((state) => state.user);
@@ -59,6 +61,14 @@ export default function Router() {
         element={
           <ProtectedRoute>
             <CreatePost />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/posts/:id/edit"
+        element={
+          <ProtectedRoute>
+            <EditPost />
           </ProtectedRoute>
         }
       />

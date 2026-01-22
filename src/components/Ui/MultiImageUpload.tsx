@@ -79,9 +79,9 @@ const MultiImageUpload = ({
           type="button"
           onClick={handleClick}
           disabled={files.length >= maxFiles}
-          className="flex-1 border-2 border-dashed border-zinc-300 dark:border-zinc-600 rounded-lg p-4 text-center hover:border-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center hover:border-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <div className="text-zinc-500 dark:text-zinc-400">
+          <div className="text-gray-500 dark:text-gray-400">
             <svg
               className="w-6 h-6 mx-auto mb-1"
               fill="none"

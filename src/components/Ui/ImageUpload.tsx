@@ -57,9 +57,9 @@ const ImageUpload = ({
         <button
           type="button"
           onClick={handleClick}
-          className="w-full border-2 border-dashed border-zinc-300 dark:border-zinc-600 rounded-lg p-6 text-center hover:border-blue-500 transition-colors"
+          className="w-full border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-blue-500 transition-colors"
         >
-          <div className="text-zinc-500 dark:text-zinc-400">
+          <div className="text-gray-500 dark:text-gray-400">
             <svg
               className="w-8 h-8 mx-auto mb-2"
               fill="none"

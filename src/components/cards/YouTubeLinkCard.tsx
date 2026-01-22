@@ -13,7 +13,7 @@ export default function YouTubeLinkCard({
     <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 relative hover:shadow-lg transition-shadow">
       <a
         href={`/posts/${post.id}`}
-        className="absolute top-2 right-2 z-10 p-1.5 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-zinc-700 transition-colors shadow-sm"
+        className="absolute top-2 right-2 z-10 p-1.5 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-gray-800 transition-colors shadow-sm"
         title="Ver detalles"
       >
         <svg

@@ -136,6 +136,19 @@ export interface MusicPost extends PostBase {
   spotifyUrl?: string;
   appleMusicUrl?: string;
   youtubeUrl?: string;
+  musicType?: "track" | "album";
+  spotifyId?: string;
+  releaseDate?: string;
+  totalTracks?: number;
+  tracks?: Array<{
+    id: string;
+    name: string;
+    trackNumber: number;
+    duration: string;
+    artists: string;
+    previewUrl?: string;
+    explicit: boolean;
+  }>;
 }
 
 /**
