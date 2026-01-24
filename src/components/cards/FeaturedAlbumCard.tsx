@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import type { MusicPost } from "../../types/posts/post";
 
 interface FeaturedAlbumCardProps {
@@ -36,13 +37,13 @@ export default function FeaturedAlbumCard({
     >
       <div className="flex flex-col items-stretch">
         {/* Added redirection to individual post page */}
-        <a href={`/posts/${post.id}`} className="block">
+        <Link to={`/posts/${post.id}`} className="block">
           <div
             className="w-full bg-center bg-no-repeat aspect-square bg-cover"
             data-alt={post.audio.coverUrl || "Album cover"}
             style={{ backgroundImage: `url('${post.audio.coverUrl || ""}')` }}
           ></div>
-        </a>
+        </Link>
         <div className="flex flex-col gap-4 p-5">
           <div>
             <p className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-1">

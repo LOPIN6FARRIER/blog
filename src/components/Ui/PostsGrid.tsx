@@ -21,22 +21,28 @@ export default function PostsGrid({ type, title }: PostsGridProps) {
     () => ({
       type,
       limit: POSTS_PER_PAGE,
-      status: "published",
+      status: "published" as const,
     }),
     [type],
   );
 
-  const { posts, loading, error, hasMore, loadMore } = usePosts(params);
+  const { data, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = usePosts(params);
+
+  // Flatten de páginas
+  const posts = data?.pages.flatMap((page) => page.data) ?? [];
+  const loading = isLoading || isFetchingNextPage;
 
   const handleLoadMore = () => {
-    loadMore();
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
   };
 
   return (
     <>
       <h1 className="text-3xl font-bold mb-6">{title}</h1>
 
-      {error && <p className="text-red-500 text-center py-4">Error: {error}</p>}
+      {error && <p className="text-red-500 text-center py-4">Error: {String(error)}</p>}
 
       {posts.length > 0 && (
         <Masonry
@@ -52,7 +58,7 @@ export default function PostsGrid({ type, title }: PostsGridProps) {
 
       {loading && <p className="text-center py-8 text-gray-500">Cargando...</p>}
 
-      {!loading && hasMore && (
+      {!loading && hasNextPage && (
         <div className="flex justify-center py-8">
           <button
             onClick={handleLoadMore}

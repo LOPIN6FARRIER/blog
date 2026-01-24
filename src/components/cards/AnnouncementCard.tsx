@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import type { AnnouncementPost } from "../../types/posts/post";
 
 const AnnouncementCard: React.FC<AnnouncementPost> = ({
@@ -73,8 +74,8 @@ const AnnouncementCard: React.FC<AnnouncementPost> = ({
 
   return (
     <div className="masonry-item rounded-xl overflow-hidden relative hover:shadow-xl transition-shadow">
-      <a
-        href={`/posts/${id}`}
+      <Link
+        to={`/posts/${id}`}
         className="absolute top-3 right-3 z-10 p-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-gray-800 transition-colors shadow-sm"
         title="Ver detalles"
       >
@@ -87,7 +88,7 @@ const AnnouncementCard: React.FC<AnnouncementPost> = ({
         >
           <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
         </svg>
-      </a>
+      </Link>
       <div className={`${config.bg} border-2 ${config.border} shadow-sm`}>
         <div className="p-5">
           <div className="flex items-start gap-3 mb-3">

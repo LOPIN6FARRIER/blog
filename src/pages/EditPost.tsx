@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Layout from "../layouts/Layout";
 import SEO from "../components/SEO";
 import { usePosts } from "../Api/usePosts";
-import type { Post } from "../types/posts/post";
+import type { Post, PostType } from "../types/posts/post";
 
 export default function EditPost() {
   const { id } = useParams<{ id: string }>();
@@ -20,18 +20,233 @@ export default function EditPost() {
     featured: false,
   });
 
+  type PostTypeOption = {
+    value: PostType;
+    label: string;
+  };
+
+  const postTypes: PostTypeOption[] = [
+    { value: "article", label: "Article" },
+    { value: "photo", label: "Photo" },
+    { value: "gallery", label: "Gallery" },
+    { value: "thought", label: "Thought" },
+    { value: "music", label: "Music" },
+    { value: "video", label: "Video" },
+    { value: "project", label: "Project" },
+    { value: "link", label: "Link" },
+    { value: "announcement", label: "Announcement" },
+    { value: "event", label: "Event" },
+    { value: "recommendation", label: "Recommendation" },
+    { value: "ranking", label: "Ranking" },
+    { value: "rating", label: "Rating" },
+  ];
+
+  // Base fields
+  const [type, setType] = useState<PostType>("article");
+  const [title, setTitle] = useState("");
+  const [tags, setTags] = useState("");
+  const [category, setCategory] = useState("");
+  const [importingFromSpotify, setImportingFromSpotify] = useState(false);
+  const [draft, setDraft] = useState<boolean>(false);
+  const [featured, setFeatured] = useState<boolean>(false);
+
+  // Article fields
+  const [excerpt, setExcerpt] = useState("");
+  const [content, setContent] = useState("");
+  const [articleReadTime, setArticleReadTime] = useState("");
+  const [articleUseUpload, setArticleUseUpload] = useState(false);
+  const [articleCoverUrl, setArticleCoverUrl] = useState("");
+  const [articleCoverAlt, setArticleCoverAlt] = useState("");
+  const [articleCoverFile, setArticleCoverFile] = useState<File | null>(null);
+
+  // Photo fields
+  const [photoImageUrl, setPhotoImageUrl] = useState("");
+  const [photoImageAlt, setPhotoImageAlt] = useState("");
+  const [photoDescription, setPhotoDescription] = useState("");
+  const [photoCamera, setPhotoCamera] = useState("");
+  const [photoLens, setPhotoLens] = useState("");
+  const [photoSettings, setPhotoSettings] = useState("");
+  const [photoLocation, setPhotoLocation] = useState("");
+  const [photoImageFile, setPhotoImageFile] = useState<File | null>(null);
+  const [photoUseUpload, setPhotoUseUpload] = useState(false);
+
+  // Gallery fields
+  const [galleryImagesCsv, setGalleryImagesCsv] = useState("");
+  const [galleryLayout, setGalleryLayout] = useState<
+    "grid" | "masonry" | "carousel"
+  >("grid");
+  const [galleryColumns, setGalleryColumns] = useState<2 | 3 | 4>(2);
+  const [galleryImageFiles, setGalleryImageFiles] = useState<File[]>([]);
+
+  // Music fields
+  const [audioUrl, setAudioUrl] = useState("");
+  const [audioTitle, setAudioTitle] = useState("");
+  const [audioArtist, setAudioArtist] = useState("");
+  const [audioAlbum, setAudioAlbum] = useState("");
+  const [audioGenre, setAudioGenre] = useState("");
+  const [audioDuration, setAudioDuration] = useState("");
+  const [audioCoverUrl, setAudioCoverUrl] = useState("");
+  const [audioCoverFile, setAudioCoverFile] = useState<File | null>(null);
+  const [audioUseUpload, setAudioUseUpload] = useState(false);
+  const [musicDescription, setMusicDescription] = useState("");
+  const [musicType, setMusicType] = useState<"track" | "album">("track");
+  const [spotifyUrl, setSpotifyUrl] = useState("");
+  const [appleMusicUrl, setAppleMusicUrl] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [releaseDate, setReleaseDate] = useState("");
+  const [totalTracks, setTotalTracks] = useState("");
+
+  // Thought fields
+  const [thoughtContent, setThoughtContent] = useState("");
+  const [thoughtSource, setThoughtSource] = useState("");
+  const [thoughtStyle, setThoughtStyle] = useState<"quote" | "note" | "idea">(
+    "note",
+  );
+
+  // Video fields
+  const [videoUrl, setVideoUrl] = useState("");
+  const [videoEmbed, setVideoEmbed] = useState("");
+  const [videoThumb, setVideoThumb] = useState("");
+  const [videoDuration, setVideoDuration] = useState("");
+  const [videoProvider, setVideoProvider] = useState<
+    "youtube" | "vimeo" | "self"
+  >("self");
+  const [videoThumbFile, setVideoThumbFile] = useState<File | null>(null);
+  const [videoUseUpload, setVideoUseUpload] = useState(false);
+
+  // Project fields
+  const [projectDescription, setProjectDescription] = useState("");
+  const [projectContent, setProjectContent] = useState("");
+  const [projectCover, setProjectCover] = useState("");
+  const [projectTechnologiesCsv, setProjectTechnologiesCsv] = useState("");
+  const [projectLiveUrl, setProjectLiveUrl] = useState("");
+  const [projectRepoUrl, setProjectRepoUrl] = useState("");
+  const [projectStatus, setProjectStatus] = useState<
+    "in_progress" | "completed" | "archived"
+  >("in_progress");
+  const [projectRole, setProjectRole] = useState("");
+  const [projectClient, setProjectClient] = useState("");
+  const [projectYear, setProjectYear] = useState("");
+  const [projectCoverFile, setProjectCoverFile] = useState<File | null>(null);
+  const [projectUseUpload, setProjectUseUpload] = useState(false);
+
+  // Link fields
+  const [linkUrl, setLinkUrl] = useState("");
+  const [linkSiteName, setLinkSiteName] = useState("");
+  const [linkFavicon, setLinkFavicon] = useState("");
+  const [linkImageUrl, setLinkImageUrl] = useState("");
+  const [linkDescription, setLinkDescription] = useState("");
+
+  // Announcement fields
+  const [announcementContent, setAnnouncementContent] = useState("");
+  const [announcementPriority, setAnnouncementPriority] = useState<
+    "low" | "normal" | "high" | "urgent"
+  >("normal");
+  const [announcementCtaText, setAnnouncementCtaText] = useState("");
+  const [announcementCtaUrl, setAnnouncementCtaUrl] = useState("");
+
+  // Event fields
+  const [eventDescription, setEventDescription] = useState("");
+  const [eventContent, setEventContent] = useState("");
+  const [eventCover, setEventCover] = useState("");
+  const [eventStart, setEventStart] = useState("");
+  const [eventEnd, setEventEnd] = useState("");
+  const [eventLocationName, setEventLocationName] = useState("");
+  const [eventLocationAddress, setEventLocationAddress] = useState("");
+  const [eventLocationUrl, setEventLocationUrl] = useState("");
+  const [eventRegistration, setEventRegistration] = useState("");
+  const [eventPrice, setEventPrice] = useState("");
+  const [eventCapacity, setEventCapacity] = useState("");
+  const [eventCoverFile, setEventCoverFile] = useState<File | null>(null);
+  const [eventUseUpload, setEventUseUpload] = useState(false);
+
+  // Recommendation fields
+  const [recommendationSubject, setRecommendationSubject] = useState("");
+  const [recommendationType, setRecommendationType] = useState<
+    "serie" | "película" | "libro" | "podcast" | "otro"
+  >("serie");
+  const [recommendationDescription, setRecommendationDescription] =
+    useState("");
+  const [recommendationRating, setRecommendationRating] = useState("");
+  const [recommendationExternalUrl, setRecommendationExternalUrl] =
+    useState("");
+  const [recommendationCoverUrl, setRecommendationCoverUrl] = useState("");
+  const [recommendationCoverFile, setRecommendationCoverFile] =
+    useState<File | null>(null);
+  const [recommendationUseUpload, setRecommendationUseUpload] = useState(false);
+
+  // Rating fields
+  const [ratingSubject, setRatingSubject] = useState("");
+  const [ratingItemType, setRatingItemType] = useState<
+    "serie" | "película" | "libro" | "podcast" | "otro"
+  >("serie");
+  const [ratingValue, setRatingValue] = useState("");
+  const [ratingLiked, setRatingLiked] = useState(false);
+  const [ratingComment, setRatingComment] = useState("");
+  const [ratingCoverUrl, setRatingCoverUrl] = useState("");
+  const [ratingCoverFile, setRatingCoverFile] = useState<File | null>(null);
+  const [ratingUseUpload, setRatingUseUpload] = useState(false);
+
+  // Ranking fields
+  const [rankingDescription, setRankingDescription] = useState("");
+  const [rankingItemsJson, setRankingItemsJson] = useState("");
+  const [rankingCoverUrl, setRankingCoverUrl] = useState("");
+  const [rankingCoverFile, setRankingCoverFile] = useState<File | null>(null);
+  const [rankingUseUpload, setRankingUseUpload] = useState(false);
+  const [rankingUseVisualEditor, setRankingUseVisualEditor] = useState(true);
+  const [rankingItems, setRankingItems] = useState<
+    {
+      rank: number;
+      subjectTitle: string;
+      itemType: "serie" | "película" | "libro" | "podcast" | "otro";
+      rating?: string;
+      description?: string;
+    }[]
+  >([]);
+  const [compact, setCompact] = useState(false);
+
+  // Messages
+  const [savedMessage, setSavedMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   // Cargar el post
   useEffect(() => {
     if (!id) return;
 
     const loadPost = async () => {
-      const postData = await fetchPostById(id);
+      const postData: Post | null = await fetchPostById(id);
       if (postData) {
         setPost(postData);
 
-        // Extraer campos según el tipo de post
-        const excerpt = "excerpt" in postData ? postData.excerpt : "";
-        const content = "content" in postData ? postData.content : "";
+        //base fields
+        setType(postData.type);
+        setTitle(postData.title);
+        setTags(postData.tags ? postData.tags.join(", ") : "");
+        setCategory(postData.category || "");
+        setTags(postData.tags ? postData.tags.join(", ") : "");
+        setCategory(postData.category || "");
+        setFeatured(postData.featured || false);
+        setDraft(postData.draft ?? true);
+
+        switch (postData.type) {
+          case "article":
+            setExcerpt(postData.excerpt || "");
+            setContent(postData.content || "");
+            setArticleCoverAlt(postData.coverImage?.alt || "");
+            setArticleCoverUrl(postData.coverImage?.url || "");
+            setArticleReadTime(postData.readTime || "");
+            break;
+            case "photo":
+            setPhotoDescription(postData.image.caption || "");
+            setPhotoImageAlt(postData.image.alt || "");
+            setPhotoImageUrl(postData.image.url || "");
+            setPhotoCamera(postData.image.metadata?.camera || "");
+            setPhotoLens(postData.image.metadata?.lens || "");
+            setPhotoSettings(postData.image.metadata?.settings || "");
+            setPhotoLocation(postData.image.metadata?.location || "");
+            break;
+          // Agrega casos para otros tipos de post según sea necesario      
+        }
 
         setFormData({
           title: postData.title || "",

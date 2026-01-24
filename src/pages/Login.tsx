@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useUserStore } from "../store/user.store";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { login } from "../services/auth";
 import { scheduleTokenRefresh } from "../services/authClient";
 
@@ -122,12 +122,12 @@ const Login: React.FC = () => {
             <div className="text-center pt-2">
               <p className="text-sm text-[#617589]">
                 Don't have an account?{" "}
-                <a
+                <Link
                   className="text-[#111418] dark:text-white font-bold hover:text-primary transition-colors"
-                  href="/signup"
+                  to="/signup"
                 >
                   Sign Up
-                </a>
+                </Link>
               </p>
             </div>
           </div>

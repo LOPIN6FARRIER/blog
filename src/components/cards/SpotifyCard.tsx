@@ -157,11 +157,11 @@ export default function SpotifyCard({ track }: SpotifyCardProps) {
               {displayedTrack.album && ` • ${displayedTrack.album}`}
             </p>
           </div>
-          <div className="flex shrink-0 items-center justify-center rounded-full size-12 bg-primary text-white shadow-md opacity-50 cursor-not-allowed">
+          {/* <div className="flex shrink-0 items-center justify-center rounded-full size-12 bg-primary text-white shadow-md opacity-50 cursor-not-allowed">
             <span className="material-symbols-outlined fill-1 text-2xl">
               {displayedTrack.isPlaying ? "pause" : "play_arrow"}
             </span>
-          </div>
+          </div> */}
         </div>
         <div className="mt-4">
           <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">

@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { Link, useNavigate } from "react-router-dom";
 import CategoryChips from "./CategoryChips";
 import { useUserStore } from "../../store/user.store";
 import type { HeaderRoutes } from "../../types/header/header";
@@ -7,11 +7,12 @@ import type { HeaderRoutes } from "../../types/header/header";
 export default function Header({ routes }: { routes: HeaderRoutes[] }) {
   const { isLoggedIn, user, logout, isAdmin } = useUserStore();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
     setShowUserMenu(false);
-    window.location.href = "/login";
+    navigate("/login");
   };
 
   return (
@@ -72,8 +73,8 @@ export default function Header({ routes }: { routes: HeaderRoutes[] }) {
                   </div>
 
                   {isAdmin() && (
-                    <a
-                      href="/create-post"
+                    <Link
+                      to="/create-post"
                       className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                       onClick={() => setShowUserMenu(false)}
                     >
@@ -91,7 +92,7 @@ export default function Header({ routes }: { routes: HeaderRoutes[] }) {
                         />
                       </svg>
                       Create Post
-                    </a>
+                    </Link>
                   )}
 
                   <button
@@ -118,12 +119,12 @@ export default function Header({ routes }: { routes: HeaderRoutes[] }) {
             )}
           </div>
         ) : (
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="shrink-0 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-colors"
           >
             Login
-          </a>
+          </Link>
         )}
       </div>
     </header>

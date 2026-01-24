@@ -14,11 +14,26 @@ const breakpointColumnsObj = {
   700: 1,
 };
 
+const POSTS_PER_PAGE = 12;
+
 export default function Home() {
-  const { posts, loading, error, hasMore, loadMore } = usePosts({});
+  const {
+    data,
+    isLoading,
+    error,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = usePosts({ limit: POSTS_PER_PAGE });
+
+  // Flatten de páginas
+  const posts = data?.pages.flatMap((page) => page.data) ?? [];
+  const loading = isLoading || isFetchingNextPage;
 
   const handleLoadMore = () => {
-    loadMore();
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
   };
 
   return (
@@ -97,7 +112,9 @@ export default function Home() {
         <SpotifySocket />
       </Section>
 
-      {error && <p className="text-red-500 text-center py-4">Error: {error}</p>}
+      {error && (
+        <p className="text-red-500 text-center py-4">Error: {error.message}</p>
+      )}
 
       <Section title="Últimos Posts" py="py-8">
         {posts.length > 0 && (
@@ -116,7 +133,7 @@ export default function Home() {
           <p className="text-center py-8 text-gray-500">Cargando posts...</p>
         )}
 
-        {!loading && hasMore && (
+        {!loading && hasNextPage && (
           <div className="flex justify-center py-8">
             <button
               onClick={handleLoadMore}

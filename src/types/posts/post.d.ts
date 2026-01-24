@@ -321,3 +321,10 @@ export type PostsQueryParams = {
   page?: number;
   q?: string;
 };
+export interface PostsResponse {
+  success: boolean;
+  data: Post[];
+  totalItems: number;
+  currentPage: number;
+  hasMorePages: boolean;
+}

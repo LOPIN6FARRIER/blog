@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Masonry from "react-masonry-css";
 import type { GalleryPost } from "../../types/posts/post";
 
@@ -25,8 +26,8 @@ export default function GalleryCard({ post }: { post: GalleryPost }) {
           <span className="text-xs font-mono text-gray-400">
             {String(post.images.length).padStart(2, "0")} IMAGES
           </span>
-          <a
-            href={`/posts/${post.id}`}
+          <Link
+            to={`/posts/${post.id}`}
             className="p-2 bg-white dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors shadow-sm border border-blue-200 dark:border-gray-700"
             title="Ver detalles"
           >
@@ -39,7 +40,7 @@ export default function GalleryCard({ post }: { post: GalleryPost }) {
             >
               <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
       <Masonry

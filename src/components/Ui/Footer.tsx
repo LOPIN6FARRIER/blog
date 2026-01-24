@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface Social {
   icon: string;
   href: string;
@@ -35,15 +37,29 @@ export default function Footer({ name, year, socials, links }: FooterProps) {
           {/* Links */}
           {links.length > 0 && (
             <nav className="flex flex-wrap gap-6">
-              {links.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.href}
-                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-[#111418] dark:hover:text-white transition-colors"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {links.map((link, index) => {
+                // Enlaces internos usan Link, externos usan a
+                const isExternal = link.href.startsWith("http");
+                return isExternal ? (
+                  <a
+                    key={index}
+                    href={link.href}
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-[#111418] dark:hover:text-white transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={index}
+                    to={link.href}
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-[#111418] dark:hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </nav>
           )}
         </div>

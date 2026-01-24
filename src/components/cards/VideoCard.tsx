@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { VideoPost } from "../../types/posts/post";
 
 interface VideoCardProps {
@@ -10,8 +11,8 @@ export default function VideoCard(props: VideoPost & VideoCardProps) {
   return (
     <div className="px-4 mb-6">
       <div className="relative flex flex-col items-stretch justify-end rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
-        <a
-          href={`/posts/${props.id}`}
+        <Link
+          to={`/posts/${props.id}`}
           className="absolute top-3 right-3 z-10 p-2 bg-white/80 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-sm"
           title="Ver detalles"
         >
@@ -24,7 +25,7 @@ export default function VideoCard(props: VideoPost & VideoCardProps) {
           >
             <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
           </svg>
-        </a>
+        </Link>
         <div
           className="w-full aspect-video rounded-t-xl bg-gray-950 flex items-center justify-center relative"
           style={{

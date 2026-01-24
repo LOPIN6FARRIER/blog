@@ -1,10 +1,11 @@
+import { Link } from "react-router-dom";
 import type { ThoughtPost } from "../../types/posts/post";
 
 export default function ThoughtCard(props: ThoughtPost) {
   return (
     <div className="col-span-1 rounded-xl p-6 flex flex-col justify-between h-auto aspect-3/4 bg-white dark:bg-gray-900 border-2 border-blue-200 dark:border-gray-700 relative hover:shadow-xl hover:border-primary dark:hover:border-primary transition-all shadow-md">
-      <a
-        href={`/posts/${props.id}`}
+      <Link
+        to={`/posts/${props.id}`}
         className="absolute top-3 right-3 z-10 p-2 bg-white/90 dark:bg-gray-950/90 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-gray-800 transition-colors shadow-md border border-blue-200 dark:border-gray-600"
         title="Ver detalles"
       >
@@ -17,7 +18,7 @@ export default function ThoughtCard(props: ThoughtPost) {
         >
           <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
         </svg>
-      </a>
+      </Link>
       <div className="size-10 rounded-full flex items-center justify-center bg-primary/10 dark:bg-primary/20 border border-primary/30">
         <span className="material-symbols-outlined text-lg text-primary">
           light_mode

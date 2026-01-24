@@ -1,320 +1,163 @@
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { fetchWithAuth } from "../services/authClient";
-import { useCallback, useEffect, useState } from "react";
-import type { Post, PostsQueryParams } from "../types/posts/post";
+import type {
+  Post,
+  PostsQueryParams,
+  PostsResponse,
+} from "../types/posts/post";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3055";
 
-export const usePosts = (params?: PostsQueryParams) => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+/* =========================
+   QUERY: LISTADO DE POSTS
+========================= */
+export function usePosts(params: PostsQueryParams = {}) {
+  const { type, status, category, tag, q, limit = 20 } = params;
 
-  const [page, setPage] = useState<number>(1);
-  const [limit] = useState<number>(20);
+  // Retornar directamente useInfiniteQuery (más estándar)
+  return useInfiniteQuery<PostsResponse>({
+    queryKey: ["posts", type, status, category, tag, q, limit],
 
-  const [totalItems, setTotalItems] = useState<number>(0);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+    queryFn: async ({ pageParam }) => {
+      const page = (pageParam as number) ?? 1;
 
-  /**
-   * Fetch posts
-   */
-  const fetchPosts = useCallback(
-    async (queryParams: PostsQueryParams, shouldAppend = false) => {
-      setLoading(true);
-      setError(null);
+      const res = await fetchWithAuth(`${API_URL}/api/posts`, {
+        method: "GET",
+        params: {
+          type,
+          status,
+          category,
+          tag,
+          q,
+          limit,
+          page,
+        },
+      });
 
-      try {
-        const response = await fetchWithAuth(`${API_URL}/api/posts`, {
-          method: "GET",
-          params: {
-            ...queryParams,
-            page,
-            limit,
-          },
-        });
-
-        const data = response.data;
-
-        if (!data.success) {
-          throw new Error(data.message || "Failed to fetch posts");
-        }
-
-        setPosts((prev) =>
-          shouldAppend ? [...prev, ...data.data] : data.data,
-        );
-
-        setTotalItems(data.totalItems);
-        setHasMore(data.hasMorePages);
-      } catch (err: unknown) {
-        setError("Failed to fetch posts: " + String(err));
-      } finally {
-        setLoading(false);
+      if (!res.data?.success) {
+        throw new Error(res.data?.message || "Failed to fetch posts");
       }
+
+      return res.data;
     },
-    [page, limit],
-  );
 
-  /**
-   * Reset cuando cambian filtros
-   */
-  const resetPosts = useCallback(() => {
-    setPosts([]);
-    setTotalItems(0);
-    setPage(1);
-    setHasMore(true);
-  }, []);
+    initialPageParam: 1,
 
-  /**
-   * Cambian filtros → reset + page 1
-   */
-  useEffect(() => {
-    if (!params) return;
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMorePages ? lastPage.currentPage + 1 : undefined,
 
-    resetPosts();
+    staleTime: 5 * 60 * 1000, // 5 minutos - datos considerados frescos
+    gcTime: 10 * 60 * 1000, // 10 minutos en memoria
+    refetchOnMount: false, // NO refetch al remontar componente
+    refetchOnWindowFocus: false, // NO refetch al cambiar foco
+  });
+}
 
-    fetchPosts(
-      {
-        ...params,
-        page: 1,
-        limit,
-      },
-      false,
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    params?.type,
-    params?.status,
-    params?.category,
-    params?.tag,
-    params?.q,
-    limit,
-  ]);
+/* =========================
+   MUTATIONS
+========================= */
+export function usePostMutations() {
+  const queryClient = useQueryClient();
 
-  /**
-   * Load more
-   */
-  const loadMore = useCallback(async () => {
-    if (!hasMore || loading) return;
-
-    const nextPage = page + 1;
-    setPage(nextPage);
-
-    await fetchPosts(
-      {
-        ...params,
-        page: nextPage,
-        limit,
-      },
-      true,
-    );
-  }, [page, limit, hasMore, loading, params, fetchPosts]);
-
-  // Función para crear un nuevo post
-  const createPost = async (newPost: Omit<Post, "id">) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetchWithAuth(`${API_URL}/api/posts`, {
+  /* CREATE POST */
+  const createPost = useMutation({
+    mutationFn: async (newPost: Omit<Post, "id">) => {
+      const res = await fetchWithAuth(`${API_URL}/api/posts`, {
         method: "POST",
         data: JSON.stringify(newPost),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
-      const data = await response.data;
-      if (data.success) {
-        setPosts((prevPosts) => [...prevPosts, data.data]);
-        return data.data;
+
+      if (!res.data?.success) {
+        throw new Error("Failed to create post");
       }
-      throw new Error("Failed to create post");
-    } catch (err: unknown) {
-      setError("Failed to create post: " + String(err));
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  // Función para crear un post de música desde URL de Spotify
-  const createMusicPostFromSpotify = async (data: {
-    url: string;
-    title?: string;
-    tags?: string[];
-    category?: string;
-    status?: "draft" | "published";
-    market?: string;
-  }) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetchWithAuth(
-        `${API_URL}/api/posts/from-spotify`,
-        {
-          method: "POST",
-          data: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      const result = await response.data;
-      if (result.success) {
-        setPosts((prevPosts) => [...prevPosts, result.data]);
-        return result.data;
-      }
-      throw new Error(
-        result.message || "Failed to create music post from Spotify",
-      );
-    } catch (err: unknown) {
-      setError("Failed to create music post from Spotify: " + String(err));
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Función para subir una imagen a un post
-  const uploadPostImage = async (postId: string, file: File) => {
-    const formData = new FormData();
-    formData.append("image", file);
-
-    try {
-      const response = await fetchWithAuth(
-        `${API_URL}/api/posts/${postId}/image`,
-        {
-          method: "POST",
-          data: formData,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
-      return response.data;
-    } catch (err: unknown) {
-      throw new Error("Failed to upload image: " + String(err));
-    }
-  };
-
-  // Función para subir múltiples imágenes a un post
-  const uploadPostImages = async (postId: string, files: File[]) => {
-    const formData = new FormData();
-    files.forEach((file) => {
-      formData.append("images", file);
-    });
-
-    try {
-      const response = await fetchWithAuth(
-        `${API_URL}/api/posts/${postId}/images`,
-        {
-          method: "POST",
-          data: formData,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
-      return response.data;
-    } catch (err: unknown) {
-      throw new Error("Failed to upload images: " + String(err));
-    }
-  };
-  // Función para obtener un post por ID
-  const fetchPostById = useCallback(
-    async (postId: string): Promise<Post | null> => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response = await fetchWithAuth(`${API_URL}/api/posts/${postId}`, {
-          method: "GET",
-        });
-
-        const data = response.data;
-
-        if (!data.success) {
-          throw new Error(data.message || "Failed to fetch post");
-        }
-
-        return data.data;
-      } catch (err: unknown) {
-        setError("Failed to fetch post: " + String(err));
-        return null;
-      } finally {
-        setLoading(false);
-      }
+      return res.data.data;
     },
-    [],
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
 
-  // Función para actualizar un post
-  const updatePost = async (postId: string, updates: Partial<Post>) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetchWithAuth(`${API_URL}/api/posts/${postId}`, {
+  /* UPDATE POST */
+  const updatePost = useMutation({
+    mutationFn: async ({
+      postId,
+      updates,
+    }: {
+      postId: string;
+      updates: Partial<Post>;
+    }) => {
+      const res = await fetchWithAuth(`${API_URL}/api/posts/${postId}`, {
         method: "PUT",
         data: JSON.stringify(updates),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
-      const data = await response.data;
-      if (data.success) {
-        // Actualizar el post en el estado local
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, ...data.data } : post,
-          ),
-        );
-        return data.data;
-      }
-      throw new Error("Failed to update post");
-    } catch (err: unknown) {
-      setError("Failed to update post: " + String(err));
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  // Función para eliminar un post
-  const deletePost = async (postId: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetchWithAuth(`${API_URL}/api/posts/${postId}`, {
+      if (!res.data?.success) {
+        throw new Error("Failed to update post");
+      }
+
+      return res.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+
+  /* DELETE POST */
+  const deletePost = useMutation({
+    mutationFn: async (postId: string) => {
+      const res = await fetchWithAuth(`${API_URL}/api/posts/${postId}`, {
         method: "DELETE",
       });
-      const data = await response.data;
-      if (data.success) {
-        // Eliminar el post del estado local
-        setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
-        return true;
+
+      if (!res.data?.success) {
+        throw new Error("Failed to delete post");
       }
-      throw new Error("Failed to delete post");
-    } catch (err: unknown) {
-      setError("Failed to delete post: " + String(err));
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+
+      return true;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+
+  /* CREATE MUSIC FROM SPOTIFY */
+  const createMusicPostFromSpotify = useMutation({
+    mutationFn: async (data: {
+      url: string;
+      title?: string;
+      tags?: string[];
+      category?: string;
+      status?: "draft" | "published";
+      market?: string;
+    }) => {
+      const res = await fetchWithAuth(`${API_URL}/api/posts/from-spotify`, {
+        method: "POST",
+        data: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!res.data?.success) {
+        throw new Error(res.data?.message);
+      }
+
+      return res.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
 
   return {
-    posts,
-    loading,
-    error,
-    totalItems,
-    hasMore,
-    loadMore,
-    resetPosts,
-    fetchPosts,
-    fetchPostById,
     createPost,
-    createMusicPostFromSpotify,
     updatePost,
     deletePost,
-    uploadPostImage,
-    uploadPostImages,
+    createMusicPostFromSpotify,
   };
-};
+}

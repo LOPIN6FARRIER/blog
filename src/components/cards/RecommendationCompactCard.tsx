@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import type { RecommendationPost } from "../../types/posts/post";
 
 export const RecommendationCompactCard: React.FC<{
@@ -11,8 +12,8 @@ export const RecommendationCompactCard: React.FC<{
         backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 60%), url('${post.coverImage?.url}')`,
       }}
     >
-      <a
-        href={`/posts/${post.id}`}
+      <Link
+        to={`/posts/${post.id}`}
         className="absolute top-3 right-3 z-10 p-2 bg-white/80 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-sm"
         title="Ver detalles"
       >
@@ -25,7 +26,7 @@ export const RecommendationCompactCard: React.FC<{
         >
           <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
         </svg>
-      </a>
+      </Link>
       <div className="p-6">
         <h2 className="text-white text-3xl font-bold leading-tight mb-2">
           {post.subjectTitle}

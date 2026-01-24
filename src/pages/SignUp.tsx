@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { register, RegisterError } from "../services/auth";
 import { useUserStore } from "../store/user.store";
 
@@ -167,12 +167,12 @@ const SignUp: React.FC = () => {
             <div className="text-center pt-2">
               <p className="text-sm text-[#617589]">
                 Already have an account?{" "}
-                <a
+                <Link
                   className="text-[#111418] dark:text-white font-bold hover:text-primary transition-colors"
-                  href="/login"
+                  to="/login"
                 >
                   Log In
-                </a>
+                </Link>
               </p>
             </div>
           </div>

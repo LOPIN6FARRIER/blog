@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { MusicPost } from "../../types/posts/post";
 
 interface MediaPlayerProps {
@@ -12,7 +13,7 @@ interface MediaPlayerProps {
 
 export default function MediaPlayer({ post }: MediaPlayerProps) {
   return (
-    <a href={`/posts/${post.id}`} className="col-span-2 block">
+    <Link to={`/posts/${post.id}`} className="col-span-2 block">
       <div className="rounded-xl bg-white dark:bg-gray-900 p-4 border border-blue-200 dark:border-gray-900 shadow-sm hover:shadow-md transition-shadow">
         <div className="flex items-center gap-4">
           <div
@@ -32,6 +33,6 @@ export default function MediaPlayer({ post }: MediaPlayerProps) {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

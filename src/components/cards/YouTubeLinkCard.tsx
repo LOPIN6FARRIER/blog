@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { VideoPost } from "../../types/posts/post";
 
 interface YouTubeLinkCardProps {
@@ -11,8 +12,8 @@ export default function YouTubeLinkCard({
 }: YouTubeLinkCardProps) {
   return (
     <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 relative hover:shadow-lg transition-shadow">
-      <a
-        href={`/posts/${post.id}`}
+      <Link
+        to={`/posts/${post.id}`}
         className="absolute top-2 right-2 z-10 p-1.5 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-gray-800 transition-colors shadow-sm"
         title="Ver detalles"
       >
@@ -25,7 +26,7 @@ export default function YouTubeLinkCard({
         >
           <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
         </svg>
-      </a>
+      </Link>
       <div
         className="relative w-full aspect-video bg-cover bg-center"
         data-alt={post.video.thumbnail || "Video thumbnail"}
