@@ -26,7 +26,14 @@ export default function PostsGrid({ type, title }: PostsGridProps) {
     [type],
   );
 
-  const { data, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = usePosts(params);
+  const {
+    data,
+    isLoading,
+    error,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = usePosts(params);
 
   // Flatten de páginas
   const posts = data?.pages.flatMap((page) => page.data) ?? [];
@@ -42,7 +49,9 @@ export default function PostsGrid({ type, title }: PostsGridProps) {
     <>
       <h1 className="text-3xl font-bold mb-6">{title}</h1>
 
-      {error && <p className="text-red-500 text-center py-4">Error: {String(error)}</p>}
+      {error && (
+        <p className="text-red-500 text-center py-4">Error: {String(error)}</p>
+      )}
 
       {posts.length > 0 && (
         <Masonry
