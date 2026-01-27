@@ -28,12 +28,26 @@ const postTypes: PostTypeOption[] = [
 ];
 
 const CreatePost = () => {
-  const { createPost, uploadPostImage, uploadPostImages, loading } =
+  const { createPost, uploadPostImage, uploadPostImages, loading, createMusicPostFromSpotify } =
     usePostMutations();
 
   const [type, setType] = useState<PostType>("article");
   const [savedMessage, setSavedMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSpotifyImport = async (url: string, baseData: { title: string; tags: string[]; category: string }) => {
+    try {
+      await createMusicPostFromSpotify.mutateAsync({
+        url,
+        title: baseData.title,
+        tags: baseData.tags,
+        category: baseData.category,
+        status: "draft",
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
 
   const handleFormSubmit = async (formData: Record<string, unknown>) => {
     setErrorMessage("");
@@ -337,7 +351,12 @@ const CreatePost = () => {
             </select>
           </div>
 
-          <PostForm type={type} onSubmit={handleFormSubmit} loading={loading} />
+          <PostForm 
+            type={type} 
+            onSubmit={handleFormSubmit} 
+            loading={loading}
+            onSpotifyImport={type === "music" ? handleSpotifyImport : undefined}
+          />
 
           {savedMessage && (
             <div className="mt-4 p-3 bg-green-100 text-green-800 rounded-lg">

@@ -9,6 +9,7 @@ interface PostFormProps {
   onSubmit: (formData: Record<string, unknown>) => void;
   loading: boolean;
   initialData?: Post;
+  onSpotifyImport?: (url: string, baseData: { title: string; tags: string[]; category: string }) => Promise<void>;
 }
 
 export default function PostForm({
@@ -16,6 +17,7 @@ export default function PostForm({
   onSubmit,
   loading,
   initialData,
+  onSpotifyImport,
 }: PostFormProps) {
   // Base fields
   const [title, setTitle] = useState(initialData?.title || "");
@@ -130,6 +132,9 @@ export default function PostForm({
   const [youtubeUrl, setYoutubeUrl] = useState(
     initialData?.type === "music" ? initialData.youtubeUrl || "" : "",
   );
+  const [musicMode, setMusicMode] = useState<"spotify" | "manual">("manual");
+  const [spotifyImportUrl, setSpotifyImportUrl] = useState("");
+  const [importingFromSpotify, setImportingFromSpotify] = useState(false);
 
   // Video fields
   const [videoUrl, setVideoUrl] = useState(
@@ -1097,187 +1102,307 @@ export default function PostForm({
       case "music":
         return (
           <>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Audio URL *
-                </label>
-                <input
-                  type="url"
-                  value={audioUrl}
-                  onChange={(e) => setAudioUrl(e.target.value)}
-                  placeholder="https://example.com/audio.mp3"
-                  className="w-full p-3 border rounded-lg"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Title *
-                </label>
-                <input
-                  type="text"
-                  value={audioTitle}
-                  onChange={(e) => setAudioTitle(e.target.value)}
-                  className="w-full p-3 border rounded-lg"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Artist *
-                </label>
-                <input
-                  type="text"
-                  value={audioArtist}
-                  onChange={(e) => setAudioArtist(e.target.value)}
-                  className="w-full p-3 border rounded-lg"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Album</label>
-                <input
-                  type="text"
-                  value={audioAlbum}
-                  onChange={(e) => setAudioAlbum(e.target.value)}
-                  className="w-full p-3 border rounded-lg"
-                />
+            {/* Toggle entre Spotify Import y Manual */}
+            <div className="mb-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border-2 border-green-200 dark:border-green-800">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  🎵 Modo de Entrada
+                </h3>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setMusicMode("spotify")}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                      musicMode === "spotify"
+                        ? "bg-green-600 text-white shadow-lg scale-105"
+                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    Importar de Spotify
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMusicMode("manual")}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                      musicMode === "manual"
+                        ? "bg-blue-600 text-white shadow-lg scale-105"
+                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    Llenar Manualmente
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">Genre</label>
-                <input
-                  type="text"
-                  value={audioGenre}
-                  onChange={(e) => setAudioGenre(e.target.value)}
-                  className="w-full p-3 border rounded-lg"
-                />
+            {/* Vista: Importar de Spotify */}
+            {musicMode === "spotify" && (
+              <div className="space-y-4 p-6 bg-green-50 dark:bg-green-900/10 rounded-lg border border-green-200 dark:border-green-800">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-green-800 dark:text-green-300">
+                    🎵 Pega la URL de Spotify (track o album)
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="url"
+                      value={spotifyImportUrl}
+                      onChange={(e) => setSpotifyImportUrl(e.target.value)}
+                      placeholder="https://open.spotify.com/track/..."
+                      className="flex-1 p-3 border border-green-300 dark:border-green-700 rounded-lg bg-white dark:bg-gray-900 focus:ring-2 focus:ring-green-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        if (!spotifyImportUrl.trim()) {
+                          alert("Por favor pega una URL de Spotify");
+                          return;
+                        }
+
+                        if (!onSpotifyImport) {
+                          alert("La función de importar desde Spotify no está disponible");
+                          return;
+                        }
+
+                        try {
+                          setImportingFromSpotify(true);
+                          
+                          // Usar datos base del formulario
+                          const baseData = {
+                            title: title || "Imported from Spotify",
+                            tags: tags ? tags.split(",").map(t => t.trim()).filter(Boolean) : [],
+                            category: category || "music",
+                          };
+                          
+                          await onSpotifyImport(spotifyImportUrl, baseData);
+                          
+                          alert("✅ Post de música creado exitosamente desde Spotify!");
+                          setSpotifyImportUrl("");
+                        } catch (error) {
+                          alert("❌ Error al importar de Spotify: " + (error instanceof Error ? error.message : String(error)));
+                        } finally {
+                          setImportingFromSpotify(false);
+                        }
+                      }}
+                      disabled={importingFromSpotify || !spotifyImportUrl.trim()}
+                      className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    >
+                      {importingFromSpotify ? (
+                        <>
+                          <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Importando...
+                        </>
+                      ) : (
+                        "Importar"
+                      )}
+                    </button>
+                  </div>
+                  <p className="text-xs text-green-700 dark:text-green-400 mt-2">
+                    ✨ Rellena automáticamente todos los campos desde Spotify (título, artista, álbum, cover, duración, etc.)
+                  </p>
+                </div>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-green-300 dark:border-green-700"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-3 bg-green-50 dark:bg-green-900/10 text-gray-500 dark:text-gray-400">
+                      Los campos se llenarán automáticamente al importar
+                    </span>
+                  </div>
+                </div>
               </div>
+            )}
 
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Duration *
-                </label>
-                <input
-                  type="text"
-                  value={audioDuration}
-                  onChange={(e) => setAudioDuration(e.target.value)}
-                  placeholder="3:42"
-                  className="w-full p-3 border rounded-lg"
-                  required
-                />
-              </div>
-            </div>
+            {/* Vista: Manual */}
+            {musicMode === "manual" && (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Audio URL *
+                    </label>
+                    <input
+                      type="url"
+                      value={audioUrl}
+                      onChange={(e) => setAudioUrl(e.target.value)}
+                      placeholder="https://example.com/audio.mp3"
+                      className="w-full p-3 border rounded-lg"
+                      required
+                    />
+                  </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Cover Image
-              </label>
-              <div className="flex gap-2 mb-2">
-                <button
-                  type="button"
-                  onClick={() => setUseUpload(false)}
-                  className={`px-3 py-1 rounded ${!useUpload ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-                >
-                  URL
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setUseUpload(true)}
-                  className={`px-3 py-1 rounded ${useUpload ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-                >
-                  Upload
-                </button>
-              </div>
-              {useUpload ? (
-                <ImageUpload
-                  onSelect={setAudioCoverFile}
-                  onClear={() => setAudioCoverFile(null)}
-                />
-              ) : (
-                <input
-                  type="url"
-                  value={audioCoverUrl}
-                  onChange={(e) => setAudioCoverUrl(e.target.value)}
-                  placeholder="https://example.com/cover.jpg"
-                  className="w-full p-3 border rounded-lg"
-                />
-              )}
-            </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Title *
+                    </label>
+                    <input
+                      type="text"
+                      value={audioTitle}
+                      onChange={(e) => setAudioTitle(e.target.value)}
+                      className="w-full p-3 border rounded-lg"
+                      required
+                    />
+                  </div>
+                </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Description
-              </label>
-              <textarea
-                value={musicDescription}
-                onChange={(e) => setMusicDescription(e.target.value)}
-                className="w-full p-3 border rounded-lg"
-                rows={3}
-              />
-            </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Artist *
+                    </label>
+                    <input
+                      type="text"
+                      value={audioArtist}
+                      onChange={(e) => setAudioArtist(e.target.value)}
+                      className="w-full p-3 border rounded-lg"
+                      required
+                    />
+                  </div>
 
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Spotify URL
-                </label>
-                <input
-                  type="url"
-                  value={spotifyUrl}
-                  onChange={(e) => setSpotifyUrl(e.target.value)}
-                  className="w-full p-3 border rounded-lg"
-                />
-              </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Album</label>
+                    <input
+                      type="text"
+                      value={audioAlbum}
+                      onChange={(e) => setAudioAlbum(e.target.value)}
+                      className="w-full p-3 border rounded-lg"
+                    />
+                  </div>
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Apple Music URL
-                </label>
-                <input
-                  type="url"
-                  value={appleMusicUrl}
-                  onChange={(e) => setAppleMusicUrl(e.target.value)}
-                  className="w-full p-3 border rounded-lg"
-                />
-              </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Genre</label>
+                    <input
+                      type="text"
+                      value={audioGenre}
+                      onChange={(e) => setAudioGenre(e.target.value)}
+                      className="w-full p-3 border rounded-lg"
+                    />
+                  </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  YouTube URL
-                </label>
-                <input
-                  type="url"
-                  value={youtubeUrl}
-                  onChange={(e) => setYoutubeUrl(e.target.value)}
-                  className="w-full p-3 border rounded-lg"
-                />
-              </div>
-            </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Duration *
+                    </label>
+                    <input
+                      type="text"
+                      value={audioDuration}
+                      onChange={(e) => setAudioDuration(e.target.value)}
+                      placeholder="3:42"
+                      className="w-full p-3 border rounded-lg"
+                      required
+                    />
+                  </div>
+                </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Music Type
-              </label>
-              <select
-                value={musicType}
-                onChange={(e) =>
-                  setMusicType(e.target.value as "track" | "album")
-                }
-                className="w-full p-3 border rounded-lg"
-              >
-                <option value="track">Track</option>
-                <option value="album">Album</option>
-              </select>
-            </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Cover Image
+                  </label>
+                  <div className="flex gap-2 mb-2">
+                    <button
+                      type="button"
+                      onClick={() => setUseUpload(false)}
+                      className={`px-3 py-1 rounded ${!useUpload ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+                    >
+                      URL
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setUseUpload(true)}
+                      className={`px-3 py-1 rounded ${useUpload ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+                    >
+                      Upload
+                    </button>
+                  </div>
+                  {useUpload ? (
+                    <ImageUpload
+                      onSelect={setAudioCoverFile}
+                      onClear={() => setAudioCoverFile(null)}
+                    />
+                  ) : (
+                    <input
+                      type="url"
+                      value={audioCoverUrl}
+                      onChange={(e) => setAudioCoverUrl(e.target.value)}
+                      placeholder="https://example.com/cover.jpg"
+                      className="w-full p-3 border rounded-lg"
+                    />
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Description
+                  </label>
+                  <textarea
+                    value={musicDescription}
+                    onChange={(e) => setMusicDescription(e.target.value)}
+                    className="w-full p-3 border rounded-lg"
+                    rows={3}
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Spotify URL
+                    </label>
+                    <input
+                      type="url"
+                      value={spotifyUrl}
+                      onChange={(e) => setSpotifyUrl(e.target.value)}
+                      className="w-full p-3 border rounded-lg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Apple Music URL
+                    </label>
+                    <input
+                      type="url"
+                      value={appleMusicUrl}
+                      onChange={(e) => setAppleMusicUrl(e.target.value)}
+                      className="w-full p-3 border rounded-lg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      YouTube URL
+                    </label>
+                    <input
+                      type="url"
+                      value={youtubeUrl}
+                      onChange={(e) => setYoutubeUrl(e.target.value)}
+                      className="w-full p-3 border rounded-lg"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Music Type
+                  </label>
+                  <select
+                    value={musicType}
+                    onChange={(e) =>
+                      setMusicType(e.target.value as "track" | "album")
+                    }
+                    className="w-full p-3 border rounded-lg"
+                  >
+                    <option value="track">Track</option>
+                    <option value="album">Album</option>
+                  </select>
+                </div>
+              </>
+            )}
           </>
         );
 
