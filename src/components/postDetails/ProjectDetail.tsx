@@ -28,7 +28,7 @@ export default function ProjectDetail({ post }: { post: ProjectPost }) {
       {post.coverImage && (
         <OptimizedImage
           src={post.coverImage.url}
-          thumbnail={post.coverImage.thumbnail}
+          thumbnail={post.coverImage.thumbnails?.medium || post.coverImage.url}
           alt={post.coverImage.alt}
           className="w-full aspect-[16/9] mb-8 rounded-2xl overflow-hidden shadow-2xl"
         />

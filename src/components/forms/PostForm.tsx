@@ -26,248 +26,266 @@ export default function PostForm({
 
   // Article fields
   const [content, setContent] = useState(
-    initialData?.type === "article" ? initialData.content || "" : ""
+    initialData?.type === "article" ? initialData.content || "" : "",
   );
   const [excerpt, setExcerpt] = useState(
-    initialData?.type === "article" ? initialData.excerpt || "" : ""
+    initialData?.type === "article" ? initialData.excerpt || "" : "",
   );
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [coverImageUrl, setCoverImageUrl] = useState(
-    initialData && (initialData.type === "article" || initialData.type === "project" || initialData.type === "event" || initialData.type === "recommendation" || initialData.type === "rating" || initialData.type === "ranking")
+    initialData &&
+      (initialData.type === "article" ||
+        initialData.type === "project" ||
+        initialData.type === "event" ||
+        initialData.type === "recommendation" ||
+        initialData.type === "rating" ||
+        initialData.type === "ranking")
       ? initialData.coverImage?.url || ""
-      : ""
+      : "",
   );
   const [coverImageAlt, setCoverImageAlt] = useState(
-    initialData?.type === "article" ? initialData.coverImage?.alt || "" : ""
+    initialData?.type === "article" ? initialData.coverImage?.alt || "" : "",
   );
   const [readTime, setReadTime] = useState(
-    initialData?.type === "article" ? initialData.readTime || "" : ""
+    initialData?.type === "article" ? initialData.readTime || "" : "",
   );
   const [useUpload, setUseUpload] = useState(false);
 
   // Photo fields
   const [photoImageFile, setPhotoImageFile] = useState<File | null>(null);
   const [photoImageUrl, setPhotoImageUrl] = useState(
-    initialData?.type === "photo" ? initialData.image?.url || "" : ""
+    initialData?.type === "photo" ? initialData.image?.url || "" : "",
   );
   const [photoImageAlt, setPhotoImageAlt] = useState(
-    initialData?.type === "photo" ? initialData.image?.alt || "" : ""
+    initialData?.type === "photo" ? initialData.image?.alt || "" : "",
   );
 
   // Gallery fields
   const [galleryImageFiles, setGalleryImageFiles] = useState<File[]>([]);
-  const [galleryImageUrls, setGalleryImageUrls] = useState<
+  const [galleryImageUrls, _setGalleryImageUrls] = useState<
     Array<{ url: string; alt: string }>
   >(initialData?.type === "gallery" ? initialData.images || [] : []);
   const [galleryImageUrlsCsv, setGalleryImageUrlsCsv] = useState(
     initialData?.type === "gallery"
       ? initialData.images?.map((img) => img.url).join(", ") || ""
-      : ""
+      : "",
   );
   const [galleryUseUpload, setGalleryUseUpload] = useState(false);
   const [galleryDescription, setGalleryDescription] = useState(
-    initialData?.type === "gallery" ? initialData.description || "" : ""
+    initialData?.type === "gallery" ? initialData.description || "" : "",
   );
   const [galleryLayout, setGalleryLayout] = useState<
     "grid" | "masonry" | "carousel"
   >(initialData?.type === "gallery" ? initialData.layout || "grid" : "grid");
   const [galleryColumns, setGalleryColumns] = useState<2 | 3 | 4>(
-    initialData?.type === "gallery" ? initialData.columns || 2 : 2
+    initialData?.type === "gallery" ? initialData.columns || 2 : 2,
   );
 
   // Thought fields
   const [thoughtContent, setThoughtContent] = useState(
-    initialData?.type === "thought" ? initialData.content || "" : ""
+    initialData?.type === "thought" ? initialData.content || "" : "",
   );
   const [thoughtSource, setThoughtSource] = useState(
-    initialData?.type === "thought" ? initialData.source || "" : ""
+    initialData?.type === "thought" ? initialData.source || "" : "",
   );
   const [thoughtStyle, setThoughtStyle] = useState<"quote" | "note" | "idea">(
-    initialData?.type === "thought" ? initialData.style || "note" : "note"
+    initialData?.type === "thought" ? initialData.style || "note" : "note",
   );
 
   // Music fields
   const [audioUrl, setAudioUrl] = useState(
-    initialData?.type === "music" ? initialData.audio?.url || "" : ""
+    initialData?.type === "music" ? initialData.audio?.url || "" : "",
   );
   const [audioTitle, setAudioTitle] = useState(
-    initialData?.type === "music" ? initialData.audio?.title || "" : ""
+    initialData?.type === "music" ? initialData.audio?.title || "" : "",
   );
   const [audioArtist, setAudioArtist] = useState(
-    initialData?.type === "music" ? initialData.audio?.artist || "" : ""
+    initialData?.type === "music" ? initialData.audio?.artist || "" : "",
   );
   const [audioAlbum, setAudioAlbum] = useState(
-    initialData?.type === "music" ? initialData.audio?.album || "" : ""
+    initialData?.type === "music" ? initialData.audio?.album || "" : "",
   );
   const [audioGenre, setAudioGenre] = useState(
-    initialData?.type === "music" ? initialData.audio?.genre || "" : ""
+    initialData?.type === "music" ? initialData.audio?.genre || "" : "",
   );
   const [audioDuration, setAudioDuration] = useState(
-    initialData?.type === "music" ? initialData.audio?.duration || "" : ""
+    initialData?.type === "music" ? initialData.audio?.duration || "" : "",
   );
   const [audioCoverUrl, setAudioCoverUrl] = useState(
-    initialData?.type === "music" ? initialData.audio?.coverUrl || "" : ""
+    initialData?.type === "music" ? initialData.audio?.coverUrl || "" : "",
   );
   const [audioCoverFile, setAudioCoverFile] = useState<File | null>(null);
   const [musicDescription, setMusicDescription] = useState(
-    initialData?.type === "music" ? initialData.description || "" : ""
+    initialData?.type === "music" ? initialData.description || "" : "",
   );
   const [musicType, setMusicType] = useState<"track" | "album">(
-    initialData?.type === "music" ? initialData.musicType || "track" : "track"
+    initialData?.type === "music" ? initialData.musicType || "track" : "track",
   );
   const [spotifyUrl, setSpotifyUrl] = useState(
-    initialData?.type === "music" ? initialData.spotifyUrl || "" : ""
+    initialData?.type === "music" ? initialData.spotifyUrl || "" : "",
   );
   const [appleMusicUrl, setAppleMusicUrl] = useState(
-    initialData?.type === "music" ? initialData.appleMusicUrl || "" : ""
+    initialData?.type === "music" ? initialData.appleMusicUrl || "" : "",
   );
   const [youtubeUrl, setYoutubeUrl] = useState(
-    initialData?.type === "music" ? initialData.youtubeUrl || "" : ""
+    initialData?.type === "music" ? initialData.youtubeUrl || "" : "",
   );
 
   // Video fields
   const [videoUrl, setVideoUrl] = useState(
-    initialData?.type === "video" ? initialData.video?.url || "" : ""
+    initialData?.type === "video" ? initialData.video?.url || "" : "",
   );
   const [videoEmbed, setVideoEmbed] = useState(
-    initialData?.type === "video" ? initialData.video?.embedUrl || "" : ""
+    initialData?.type === "video" ? initialData.video?.embedUrl || "" : "",
   );
   const [videoThumb, setVideoThumb] = useState(
-    initialData?.type === "video" ? initialData.video?.thumbnail || "" : ""
+    initialData?.type === "video" ? initialData.video?.thumbnail || "" : "",
   );
   const [videoDuration, setVideoDuration] = useState(
-    initialData?.type === "video" ? initialData.video?.duration || "" : ""
+    initialData?.type === "video" ? initialData.video?.duration || "" : "",
   );
   const [videoProvider, setVideoProvider] = useState<
     "youtube" | "vimeo" | "self"
   >(
-    initialData?.type === "video" ? initialData.video?.provider || "self" : "self"
+    initialData?.type === "video"
+      ? initialData.video?.provider || "self"
+      : "self",
   );
   const [videoDescription, setVideoDescription] = useState(
-    initialData?.type === "video" ? initialData.description || "" : ""
+    initialData?.type === "video" ? initialData.description || "" : "",
   );
 
   // Project fields
   const [projectDescription, setProjectDescription] = useState(
-    initialData?.type === "project" ? initialData.description || "" : ""
+    initialData?.type === "project" ? initialData.description || "" : "",
   );
   const [projectContent, setProjectContent] = useState(
-    initialData?.type === "project" ? initialData.content || "" : ""
+    initialData?.type === "project" ? initialData.content || "" : "",
   );
   const [projectTechnologies, setProjectTechnologies] = useState(
-    initialData?.type === "project" ? initialData.technologies?.join(", ") || "" : ""
+    initialData?.type === "project"
+      ? initialData.technologies?.join(", ") || ""
+      : "",
   );
   const [projectLiveUrl, setProjectLiveUrl] = useState(
-    initialData?.type === "project" ? initialData.liveUrl || "" : ""
+    initialData?.type === "project" ? initialData.liveUrl || "" : "",
   );
   const [projectRepoUrl, setProjectRepoUrl] = useState(
-    initialData?.type === "project" ? initialData.repoUrl || "" : ""
+    initialData?.type === "project" ? initialData.repoUrl || "" : "",
   );
   const [projectStatus, setProjectStatus] = useState<
     "in-progress" | "completed" | "archived"
   >(
-    initialData?.type === "project" ? initialData.status || "in-progress" : "in-progress"
+    initialData?.type === "project"
+      ? initialData.status || "in-progress"
+      : "in-progress",
   );
 
   // Link fields
   const [linkUrl, setLinkUrl] = useState(
-    initialData?.type === "link" ? initialData.url || "" : ""
+    initialData?.type === "link" ? initialData.url || "" : "",
   );
   const [linkDescription, setLinkDescription] = useState(
-    initialData?.type === "link" ? initialData.description || "" : ""
+    initialData?.type === "link" ? initialData.description || "" : "",
   );
   const [linkSiteName, setLinkSiteName] = useState(
-    initialData?.type === "link" ? initialData.siteName || "" : ""
+    initialData?.type === "link" ? initialData.siteName || "" : "",
   );
 
   // Announcement fields
   const [announcementContent, setAnnouncementContent] = useState(
-    initialData?.type === "announcement" ? initialData.content || "" : ""
+    initialData?.type === "announcement" ? initialData.content || "" : "",
   );
   const [announcementPriority, setAnnouncementPriority] = useState<
     "low" | "normal" | "high" | "urgent"
   >(
-    initialData?.type === "announcement" ? initialData.priority || "normal" : "normal"
+    initialData?.type === "announcement"
+      ? initialData.priority || "normal"
+      : "normal",
   );
   const [announcementCtaText, setAnnouncementCtaText] = useState(
-    initialData?.type === "announcement" ? initialData.ctaText || "" : ""
+    initialData?.type === "announcement" ? initialData.ctaText || "" : "",
   );
   const [announcementCtaUrl, setAnnouncementCtaUrl] = useState(
-    initialData?.type === "announcement" ? initialData.ctaUrl || "" : ""
+    initialData?.type === "announcement" ? initialData.ctaUrl || "" : "",
   );
 
   // Event fields
   const [eventDescription, setEventDescription] = useState(
-    initialData?.type === "event" ? initialData.description || "" : ""
+    initialData?.type === "event" ? initialData.description || "" : "",
   );
   const [eventContent, setEventContent] = useState(
-    initialData?.type === "event" ? initialData.content || "" : ""
+    initialData?.type === "event" ? initialData.content || "" : "",
   );
   const [eventStart, setEventStart] = useState(
     initialData?.type === "event"
       ? typeof initialData.startDate === "string"
         ? initialData.startDate
         : initialData.startDate?.toISOString() || ""
-      : ""
+      : "",
   );
   const [eventEnd, setEventEnd] = useState(
     initialData?.type === "event"
       ? typeof initialData.endDate === "string"
         ? initialData.endDate
         : initialData.endDate?.toISOString() || ""
-      : ""
+      : "",
   );
   const [eventLocationName, setEventLocationName] = useState(
-    initialData?.type === "event" ? initialData.location?.name || "" : ""
+    initialData?.type === "event" ? initialData.location?.name || "" : "",
   );
   const [eventLocationAddress, setEventLocationAddress] = useState(
-    initialData?.type === "event" ? initialData.location?.address || "" : ""
+    initialData?.type === "event" ? initialData.location?.address || "" : "",
   );
   const [eventRegistrationUrl, setEventRegistrationUrl] = useState(
-    initialData?.type === "event" ? initialData.registrationUrl || "" : ""
+    initialData?.type === "event" ? initialData.registrationUrl || "" : "",
   );
 
   // Recommendation fields
   const [recommendationSubject, setRecommendationSubject] = useState(
-    initialData?.type === "recommendation" ? initialData.subjectTitle || "" : ""
+    initialData?.type === "recommendation"
+      ? initialData.subjectTitle || ""
+      : "",
   );
   const [recommendationType, setRecommendationType] = useState<
     "serie" | "película" | "libro" | "podcast" | "otro"
   >(
-    initialData?.type === "recommendation" ? initialData.recommendationType || "serie" : "serie"
+    initialData?.type === "recommendation"
+      ? initialData.recommendationType || "serie"
+      : "serie",
   );
   const [recommendationDescription, setRecommendationDescription] = useState(
-    initialData?.type === "recommendation" ? initialData.description || "" : ""
+    initialData?.type === "recommendation" ? initialData.description || "" : "",
   );
   const [recommendationRating, setRecommendationRating] = useState(
-    initialData?.type === "recommendation" ? initialData.rating?.toString() || "" : ""
+    initialData?.type === "recommendation"
+      ? initialData.rating?.toString() || ""
+      : "",
   );
   const [recommendationExternalUrl, setRecommendationExternalUrl] = useState(
-    initialData?.type === "recommendation" ? initialData.externalUrl || "" : ""
+    initialData?.type === "recommendation" ? initialData.externalUrl || "" : "",
   );
 
   // Rating fields
   const [ratingSubject, setRatingSubject] = useState(
-    initialData?.type === "rating" ? initialData.subjectTitle || "" : ""
+    initialData?.type === "rating" ? initialData.subjectTitle || "" : "",
   );
   const [ratingItemType, setRatingItemType] = useState<
     "serie" | "película" | "libro" | "podcast" | "otro"
-  >(
-    initialData?.type === "rating" ? initialData.itemType || "serie" : "serie"
-  );
+  >(initialData?.type === "rating" ? initialData.itemType || "serie" : "serie");
   const [ratingValue, setRatingValue] = useState(
-    initialData?.type === "rating" ? initialData.rating?.toString() || "" : ""
+    initialData?.type === "rating" ? initialData.rating?.toString() || "" : "",
   );
   const [ratingLiked, setRatingLiked] = useState(
-    initialData?.type === "rating" ? initialData.liked || false : false
+    initialData?.type === "rating" ? initialData.liked || false : false,
   );
   const [ratingComment, setRatingComment] = useState(
-    initialData?.type === "rating" ? initialData.comment || "" : ""
+    initialData?.type === "rating" ? initialData.comment || "" : "",
   );
 
   // Ranking fields
   const [rankingDescription, setRankingDescription] = useState(
-    initialData?.type === "ranking" ? initialData.description || "" : ""
+    initialData?.type === "ranking" ? initialData.description || "" : "",
   );
   const [rankingItems, setRankingItems] = useState<
     Array<{

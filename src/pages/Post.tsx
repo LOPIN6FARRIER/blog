@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import { usePostById } from "../Api/usePosts";
 import Layout from "../layouts/Layout";
@@ -44,8 +43,9 @@ export default function Post() {
       return post.coverImage.url;
     if (post.type === "project" && post.coverImage?.url)
       return post.coverImage.url;
-    if (post.type === "photo" && post.imageUrl) return post.imageUrl;
-    if (post.type === "video" && post.thumbnailUrl) return post.thumbnailUrl;
+    if (post.type === "photo" && post.image?.url) return post.image.url;
+    if (post.type === "video" && post.video?.thumbnail)
+      return post.video.thumbnail;
     if (post.type === "music" && post.audio?.coverUrl)
       return post.audio.coverUrl;
     if (post.type === "event" && post.coverImage?.url)
@@ -105,6 +105,8 @@ export default function Post() {
   }
 
   const renderPostContent = () => {
+    if (!post) return null;
+
     switch (post.type) {
       case "article":
         return <ArticleDetail post={post} />;
@@ -132,14 +134,18 @@ export default function Post() {
         return <RatingDetail post={post} />;
       case "ranking":
         return <RankingDetail post={post} />;
-      default:
+      default: {
+        // Exhaustive check
+        const _exhaustiveCheck: never = post;
+        void _exhaustiveCheck;
         return (
           <div className="text-center py-16">
             <p className="text-gray-600 dark:text-gray-400">
-              Unknown post type: {post.type}
+              Unknown post type
             </p>
           </div>
         );
+      }
     }
   };
 
@@ -151,8 +157,16 @@ export default function Post() {
         image={getPostImage(post)}
         url={`https://vinicioesparza.dev/post/${post.slug}`}
         type="article"
-        publishedTime={post.publishedAt}
-        modifiedTime={post.updatedAt}
+        publishedTime={
+          typeof post.publishedAt === "string"
+            ? post.publishedAt
+            : post.publishedAt?.toISOString()
+        }
+        modifiedTime={
+          typeof post.updatedAt === "string"
+            ? post.updatedAt
+            : post.updatedAt?.toISOString()
+        }
         keywords={post.tags?.join(", ")}
       />
       {(post.type === "article" || post.type === "project") && (
@@ -161,8 +175,14 @@ export default function Post() {
           data={{
             headline: post.title,
             image: getPostImage(post),
-            datePublished: post.publishedAt,
-            dateModified: post.updatedAt,
+            datePublished:
+              typeof post.publishedAt === "string"
+                ? post.publishedAt
+                : post.publishedAt?.toISOString(),
+            dateModified:
+              typeof post.updatedAt === "string"
+                ? post.updatedAt
+                : post.updatedAt?.toISOString(),
             description: getPostDescription(post),
             keywords: post.tags?.join(", "),
             articleSection: post.category || post.type,

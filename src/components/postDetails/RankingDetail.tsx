@@ -17,7 +17,9 @@ export default function RankingDetail({ post }: { post: RankingPost }) {
         {post.coverImage && (
           <OptimizedImage
             src={post.coverImage.url}
-            thumbnail={post.coverImage.thumbnail}
+            thumbnail={
+              post.coverImage.thumbnails?.medium || post.coverImage.url
+            }
             alt={post.coverImage.alt}
             className="w-full aspect-[21/9] mb-6 rounded-2xl overflow-hidden shadow-2xl"
           />
@@ -55,7 +57,9 @@ export default function RankingDetail({ post }: { post: RankingPost }) {
               {item.coverImage && (
                 <OptimizedImage
                   src={item.coverImage.url}
-                  thumbnail={item.coverImage.thumbnail}
+                  thumbnail={
+                    item.coverImage.thumbnails?.medium || item.coverImage.url
+                  }
                   alt={item.coverImage.alt}
                   className="w-24 h-32 shrink-0 rounded-lg overflow-hidden shadow-md"
                 />

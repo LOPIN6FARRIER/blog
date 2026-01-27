@@ -24,7 +24,7 @@ export default function EventDetail({ post }: { post: EventPost }) {
       {post.coverImage && (
         <OptimizedImage
           src={post.coverImage.url}
-          thumbnail={post.coverImage.thumbnail}
+          thumbnail={post.coverImage.thumbnails?.medium || post.coverImage.url}
           alt={post.coverImage.alt}
           className="w-full aspect-[21/9] mb-8 rounded-2xl overflow-hidden shadow-2xl"
         />

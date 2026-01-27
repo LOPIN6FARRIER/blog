@@ -33,7 +33,7 @@ export default function GalleryDetail({ post }: { post: GalleryPost }) {
           >
             <OptimizedImage
               src={image.url}
-              thumbnail={image.thumbnail}
+              thumbnail={image.thumbnails?.medium || image.url}
               alt={image.alt || `Imagen ${index + 1}`}
               className="w-full h-full"
               loading="lazy"

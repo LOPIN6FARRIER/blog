@@ -10,7 +10,7 @@ export default function MusicDetail({ post }: { post: MusicPost }) {
           {post.audio.coverUrl && (
             <OptimizedImage
               src={post.audio.coverUrl}
-              thumbnail={post.audio.coverThumbnail}
+              thumbnail={post.audio.coverUrl}
               alt={post.title}
               className="w-64 h-64 shrink-0 rounded-xl overflow-hidden shadow-2xl"
             />

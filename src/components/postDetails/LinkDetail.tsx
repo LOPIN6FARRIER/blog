@@ -9,7 +9,7 @@ export default function LinkDetail({ post }: { post: LinkPost }) {
         {post.image && (
           <OptimizedImage
             src={post.image.url}
-            thumbnail={post.image.thumbnail}
+            thumbnail={post.image.thumbnails?.medium || post.image.url}
             alt={post.image.alt}
             className="aspect-[2/1] w-full bg-gray-100 dark:bg-gray-950"
           />

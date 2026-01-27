@@ -8,7 +8,7 @@ export default function ArticleDetail({ post }: { post: ArticlePost }) {
       {post.coverImage && (
         <OptimizedImage
           src={post.coverImage.url}
-          thumbnail={post.coverImage.thumbnail}
+          thumbnail={post.coverImage.thumbnails?.medium || post.coverImage.url}
           alt={post.coverImage.alt}
           className="w-full aspect-[21/9] mb-8 rounded-2xl overflow-hidden"
         />

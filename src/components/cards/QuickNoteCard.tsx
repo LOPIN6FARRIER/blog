@@ -1,4 +1,3 @@
-import React from "react";
 import type { ThoughtPost } from "../../types/posts/post";
 
 interface QuickNoteCardProps {

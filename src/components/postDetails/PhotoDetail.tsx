@@ -8,7 +8,7 @@ export default function PhotoDetail({ post }: { post: PhotoPost }) {
       <div className="mb-8">
         <OptimizedImage
           src={post.image.url}
-          thumbnail={post.image.thumbnail}
+          thumbnail={post.image.thumbnails?.medium || post.image.url}
           alt={post.image.alt}
           className="w-full rounded-2xl shadow-2xl"
           style={{ minHeight: "400px" }}

@@ -21,7 +21,9 @@ export default function RatingDetail({ post }: { post: RatingPost }) {
           {post.coverImage && (
             <OptimizedImage
               src={post.coverImage.url}
-              thumbnail={post.coverImage.thumbnail}
+              thumbnail={
+                post.coverImage.thumbnails?.medium || post.coverImage.url
+              }
               alt={post.coverImage.alt}
               className="w-48 h-72 mx-auto md:mx-0 shrink-0 rounded-xl overflow-hidden shadow-2xl mb-6 md:mb-0"
             />

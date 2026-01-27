@@ -44,7 +44,9 @@ export default function RecommendationDetail({
           {post.coverImage && (
             <OptimizedImage
               src={post.coverImage.url}
-              thumbnail={post.coverImage.thumbnail}
+              thumbnail={
+                post.coverImage.thumbnails?.medium || post.coverImage.url
+              }
               alt={post.coverImage.alt}
               className={`${post.compact ? "w-48 h-72 mx-auto mb-6" : "w-64 h-96 shrink-0"} rounded-xl overflow-hidden shadow-2xl`}
             />
