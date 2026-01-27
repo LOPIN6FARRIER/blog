@@ -1,17 +1,17 @@
 import type { ArticlePost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function ArticleDetail({ post }: { post: ArticlePost }) {
   return (
     <article className="max-w-4xl mx-auto">
       {/* Hero Image */}
       {post.coverImage && (
-        <div className="w-full aspect-[21/9] mb-8 rounded-2xl overflow-hidden">
-          <img
-            src={post.coverImage.url}
-            alt={post.coverImage.alt}
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <OptimizedImage
+          src={post.coverImage.url}
+          thumbnail={post.coverImage.thumbnail}
+          alt={post.coverImage.alt}
+          className="w-full aspect-[21/9] mb-8 rounded-2xl overflow-hidden"
+        />
       )}
 
       {/* Header */}

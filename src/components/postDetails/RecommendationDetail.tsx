@@ -1,4 +1,5 @@
 import type { RecommendationPost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function RecommendationDetail({
   post,
@@ -41,15 +42,12 @@ export default function RecommendationDetail({
         >
           {/* Cover Image */}
           {post.coverImage && (
-            <div
+            <OptimizedImage
+              src={post.coverImage.url}
+              thumbnail={post.coverImage.thumbnail}
+              alt={post.coverImage.alt}
               className={`${post.compact ? "w-48 h-72 mx-auto mb-6" : "w-64 h-96 shrink-0"} rounded-xl overflow-hidden shadow-2xl`}
-            >
-              <img
-                src={post.coverImage.url}
-                alt={post.coverImage.alt}
-                className="w-full h-full object-cover"
-              />
-            </div>
+            />
           )}
 
           {/* Info */}

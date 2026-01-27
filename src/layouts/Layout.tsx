@@ -4,18 +4,18 @@ import type { HeaderRoutes } from "../types/header/header";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const routes: HeaderRoutes[] = [
-    { path: "/", name: "Home" },
-    { path: "/photos", name: "Photos" },
-    { path: "/music", name: "Music" },
-    { path: "/videos", name: "Videos" },
-    { path: "/thoughts", name: "Thoughts" },
-    { path: "/articles", name: "Articles" },
-    { path: "/projects", name: "Projects" },
-    { path: "/events", name: "Events" },
-    { path: "/links", name: "Links" },
-    { path: "/entertainment", name: "Entertainment" },
-    { path: "/contacto", name: "Contacto" },
-    { path: "/announcements", name: "Announcements" },
+    { path: "/", name: "Home", order: 1 },
+    { path: "/photos", name: "Photos", order: 2 },
+    { path: "/music", name: "Music", order: 3 },
+    { path: "/articles", name: "Articles", order: 4 },
+    { path: "/entertainment", name: "Entertainment", order: 5 },
+    { path: "/projects", name: "Projects", order: 6 },
+    { path: "/thoughts", name: "Thoughts", order: 7 },
+    { path: "/links", name: "Links", order: 8 },
+    { path: "/events", name: "Events", order: 9 },
+    { path: "/videos", name: "Videos", order: 10 },
+    { path: "/announcements", name: "Announcements", order: 11 },
+    { path: "/contacto", name: "Contacto", order: 12 },
   ];
   return (
     <div className="min-h-screen flex flex-col">

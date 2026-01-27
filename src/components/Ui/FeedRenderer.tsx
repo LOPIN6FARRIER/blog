@@ -25,9 +25,13 @@ import PostActions from "./PostActions";
 
 interface FeedRendererProps {
   item: FeedItem;
+  hideActions?: boolean;
 }
 
-const FeedRenderer: React.FC<FeedRendererProps> = ({ item }) => {
+const FeedRenderer: React.FC<FeedRendererProps> = ({
+  item,
+  hideActions = false,
+}) => {
   const { post, size = "medium" } = item;
 
   // Determina las clases de span basado en el tamaño
@@ -46,8 +50,19 @@ const FeedRenderer: React.FC<FeedRendererProps> = ({ item }) => {
 
   return (
     <div className={spanClass}>
-      <div className="relative">
-        <PostActions postId={post.id} />
+      <div
+        className="relative"
+        style={
+          hideActions
+            ? {
+                pointerEvents: "none",
+                opacity: 0.95,
+                userSelect: "none",
+              }
+            : undefined
+        }
+      >
+        {!hideActions && <PostActions postId={post.id} />}
         {post.type === "article" && (
           <>
             {size === "full" || size === "large" ? (

@@ -1,4 +1,5 @@
 import type { EventPost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function EventDetail({ post }: { post: EventPost }) {
   const formatDate = (date: string | Date) => {
@@ -21,13 +22,12 @@ export default function EventDetail({ post }: { post: EventPost }) {
     <article className="max-w-5xl mx-auto">
       {/* Hero */}
       {post.coverImage && (
-        <div className="w-full aspect-[21/9] mb-8 rounded-2xl overflow-hidden shadow-2xl">
-          <img
-            src={post.coverImage.url}
-            alt={post.coverImage.alt}
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <OptimizedImage
+          src={post.coverImage.url}
+          thumbnail={post.coverImage.thumbnail}
+          alt={post.coverImage.alt}
+          className="w-full aspect-[21/9] mb-8 rounded-2xl overflow-hidden shadow-2xl"
+        />
       )}
 
       {/* Header */}

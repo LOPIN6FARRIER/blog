@@ -1,5 +1,6 @@
 import Masonry from "react-masonry-css";
 import { usePosts } from "../Api/usePosts";
+import { useAboutMe } from "../Api/useAboutMe";
 import AboutMe from "../components/Ui/AboutMe";
 import SpotifySocket from "../components/Ui/SpotifySocket";
 import FeedRenderer from "../components/Ui/FeedRenderer";
@@ -25,6 +26,12 @@ export default function Home() {
     fetchNextPage,
     isFetchingNextPage,
   } = usePosts({ limit: POSTS_PER_PAGE });
+
+  const {
+    data: aboutMeData,
+    isLoading: aboutMeLoading,
+    error: aboutMeError,
+  } = useAboutMe();
 
   // Flatten de páginas
   const posts = data?.pages.flatMap((page) => page.data) ?? [];
@@ -68,44 +75,28 @@ export default function Home() {
         }}
       />
       <Section py="py-0">
-        <AboutMe
-          name="Vinicio Esparza"
-          title="Frontend Developer"
-          location="Guadalajara Jal., México"
-          bio="Me llamo Vinicio Samuel Esparza —¡simplemente Vinicio para mis amigos!— y empecé en la programación a los 16 años. Soy Desarrollador Full Stack con experiencia en soluciones web y móviles. Domino JavaScript/TypeScript (Angular, React, Node.js) y .NET (C#), diseño APIs RESTful, optimizo bases de datos SQL/NoSQL y he coordinado equipos ágiles. Terminé la Licenciatura en Informática y Tecnologías Computacionales en la Universidad Autónoma de Aguascalientes (2019–2023), donde mi proyecto final fue un sistema integral de inventarios en C#/.NET."
-          skills={[
-            "Typescript",
-            "React",
-            "Next.js",
-            "Node.js",
-            "Angular",
-            "Astro",
-            "SQL",
-            "NoSQL",
-            "Redis",
-          ]}
-          email="vinicioesparza15@gmail.com"
-          interests={["Fotografía", "Música", "Programación", "Comida"]}
-          quote="Si dios no existe quien invento los travesaños ⚽️"
-          image="https://res.cloudinary.com/dniyqu7yq/image/upload/v1768759191/blog/Vinicio_Esparza_pi3x1x.webp"
-          socials={[
-            {
-              icon: "code",
-              href: "https://github.com/LOPIN6FARRIER",
-              label: "GitHub",
-            },
-            {
-              icon: "link",
-              href: "https://www.linkedin.com/in/vinicio-samuel-esparza-ortiz/",
-              label: "LinkedIn",
-            },
-            {
-              icon: "public",
-              href: "https://x.com/vincio_esparza",
-              label: "Twitter",
-            },
-          ]}
-        />
+        {aboutMeLoading ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500">Cargando perfil...</p>
+          </div>
+        ) : aboutMeError ? (
+          <div className="text-center py-12">
+            <p className="text-red-500">Error al cargar perfil</p>
+          </div>
+        ) : aboutMeData ? (
+          <AboutMe
+            name={aboutMeData.name}
+            title={aboutMeData.title}
+            location={aboutMeData.location}
+            bio={aboutMeData.bio}
+            skills={aboutMeData.skills}
+            email={aboutMeData.email}
+            interests={aboutMeData.interests}
+            quote={aboutMeData.quote}
+            image={aboutMeData.image}
+            socials={aboutMeData.socials}
+          />
+        ) : null}
       </Section>
 
       <Section py="py-6">

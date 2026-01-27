@@ -1,5 +1,6 @@
 import type { GalleryPost } from "../../types/posts/post";
 import { useState } from "react";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function GalleryDetail({ post }: { post: GalleryPost }) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -30,10 +31,12 @@ export default function GalleryDetail({ post }: { post: GalleryPost }) {
             onClick={() => setSelectedIndex(index)}
             className="aspect-square rounded-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer"
           >
-            <img
+            <OptimizedImage
               src={image.url}
+              thumbnail={image.thumbnail}
               alt={image.alt || `Imagen ${index + 1}`}
-              className="w-full h-full object-cover"
+              className="w-full h-full"
+              loading="lazy"
             />
           </button>
         ))}

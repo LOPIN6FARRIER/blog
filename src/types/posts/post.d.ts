@@ -52,6 +52,11 @@ export interface ImageMedia {
   width?: number;
   height?: number;
   caption?: string;
+  thumbnails?: {
+    small?: string;
+    medium?: string;
+    large?: string;
+  };
 }
 
 export interface AudioMedia {

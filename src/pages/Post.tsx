@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { usePosts } from "../Api/usePosts";
+import { usePostById } from "../Api/usePosts";
 import Layout from "../layouts/Layout";
 import SEO from "../components/SEO";
 import StructuredData from "../components/StructuredData";
@@ -23,10 +23,7 @@ import RankingDetail from "../components/postDetails/RankingDetail";
 
 export default function Post() {
   const { id } = useParams<{ id: string }>();
-  const { fetchPostById } = usePosts({});
-  const [post, setPost] = useState<Post | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: post, isLoading, error } = usePostById(id);
 
   // Helper function to get post description
   const getPostDescription = (post: Post): string => {
@@ -58,34 +55,7 @@ export default function Post() {
     return "/icono.png";
   };
 
-  useEffect(() => {
-    if (!id) {
-      setError("No post ID provided");
-      setLoading(false);
-      return;
-    }
-
-    const loadPost = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const fetchedPost = await fetchPostById(id);
-        if (fetchedPost) {
-          setPost(fetchedPost);
-        } else {
-          setError("Post not found");
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load post");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadPost();
-  }, [id, fetchPostById]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <Layout>
         <div className="flex items-center justify-center min-h-[60vh]">
@@ -107,7 +77,9 @@ export default function Post() {
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
               Oops!
             </h2>
-            <p className="text-gray-600 dark:text-gray-400">{error}</p>
+            <p className="text-gray-600 dark:text-gray-400">
+              Error loading post
+            </p>
           </div>
         </div>
       </Layout>

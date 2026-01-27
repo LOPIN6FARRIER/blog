@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
 import type { PhotoPost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function PhotoCard(props: PhotoPost) {
   return (
     <div className="px-4 mb-6">
-      <div
-        className="relative bg-cover bg-center flex flex-col items-stretch justify-end rounded-xl overflow-hidden min-h-105 shadow-sm hover:shadow-xl transition-shadow cursor-pointer"
-        style={{
-          backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 60%), url('${props.image.url}')`,
-        }}
-      >
+      {props.image?.url && (
+        <OptimizedImage
+          src={props.image.url}
+          thumbnail={props.image.thumbnails?.large}
+          alt={props.image.alt}
+          className="relative flex flex-col items-stretch justify-end rounded-xl overflow-hidden min-h-105 shadow-sm hover:shadow-xl transition-shadow cursor-pointer"
+          overlay="linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 60%)"
+          loading="lazy"
+        >
         <Link
           to={`/posts/${props.id}`}
           className="absolute top-3 right-3 z-10 p-2 bg-white/80 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-sm"
@@ -33,7 +37,8 @@ export default function PhotoCard(props: PhotoPost) {
             {props.title}
           </h2>
         </div>
-      </div>
+      </OptimizedImage>
+      )}
     </div>
   );
 }

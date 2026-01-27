@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Masonry from "react-masonry-css";
 import type { GalleryPost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function GalleryCard({ post }: { post: GalleryPost }) {
   const maxItems = 4;
@@ -57,11 +58,15 @@ export default function GalleryCard({ post }: { post: GalleryPost }) {
                 : "card-border hover:shadow-lg hover:border-secondary"
             } p-1 bg-white dark:bg-gray-900 transition-all duration-300`}
           >
-            <div
-              className="w-full bg-center bg-no-repeat aspect-square bg-cover rounded"
-              data-alt={image.alt}
-              style={{ backgroundImage: `url('${image.url}')` }}
-            ></div>
+            {image.url && (
+              <OptimizedImage
+                src={image.url}
+                thumbnail={image.thumbnails?.medium}
+                alt={image.alt}
+                className="w-full aspect-square rounded"
+                loading="lazy"
+              />
+            )}
           </div>
         ))}
       </Masonry>

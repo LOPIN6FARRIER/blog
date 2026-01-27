@@ -1,14 +1,17 @@
 import type { PhotoPost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function PhotoDetail({ post }: { post: PhotoPost }) {
   return (
     <article className="max-w-6xl mx-auto">
       {/* Main Image */}
       <div className="mb-8">
-        <img
+        <OptimizedImage
           src={post.image.url}
+          thumbnail={post.image.thumbnail}
           alt={post.image.alt}
           className="w-full rounded-2xl shadow-2xl"
+          style={{ minHeight: "400px" }}
         />
       </div>
 

@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import type { ArticlePost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
+
 export default function ArticleCard(props: ArticlePost) {
   return (
     <div className="masonry-item bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm relative hover:shadow-lg transition-shadow">
@@ -18,11 +20,15 @@ export default function ArticleCard(props: ArticlePost) {
           <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
         </svg>
       </Link>
-      <div
-        className="w-full aspect-4/5 bg-cover bg-center hover:scale-105 transition-transform"
-        data-alt={props.coverImage?.alt}
-        style={{ backgroundImage: `url('${props.coverImage?.url}')` }}
-      ></div>
+      {props.coverImage?.url && (
+        <OptimizedImage
+          src={props.coverImage.url}
+          thumbnail={props.coverImage?.thumbnails?.medium}
+          alt={props.coverImage?.alt}
+          className="w-full aspect-4/5 hover:scale-105 transition-transform"
+          loading="lazy"
+        />
+      )}
       <div className="p-4">
         <p className="text-primary text-[10px] font-bold uppercase tracking-widest mb-1">
           {props.category}

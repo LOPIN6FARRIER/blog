@@ -1,4 +1,5 @@
 import type { ProjectPost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function ProjectDetail({ post }: { post: ProjectPost }) {
   // Normalize status (API might return 'in-progress' but type expects 'in_progress')
@@ -25,13 +26,12 @@ export default function ProjectDetail({ post }: { post: ProjectPost }) {
     <article className="max-w-5xl mx-auto">
       {/* Hero Image */}
       {post.coverImage && (
-        <div className="w-full aspect-[16/9] mb-8 rounded-2xl overflow-hidden shadow-2xl">
-          <img
-            src={post.coverImage.url}
-            alt={post.coverImage.alt}
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <OptimizedImage
+          src={post.coverImage.url}
+          thumbnail={post.coverImage.thumbnail}
+          alt={post.coverImage.alt}
+          className="w-full aspect-[16/9] mb-8 rounded-2xl overflow-hidden shadow-2xl"
+        />
       )}
 
       {/* Header */}

@@ -1,5 +1,5 @@
 import { useUserStore } from "../../store/user.store";
-import { usePosts } from "../../Api/usePosts";
+import { usePostMutations } from "../../Api/usePosts";
 import { useNavigate } from "react-router-dom";
 
 interface PostActionsProps {
@@ -9,7 +9,7 @@ interface PostActionsProps {
 
 export default function PostActions({ postId, onDelete }: PostActionsProps) {
   const { isLoggedIn, isAdmin } = useUserStore();
-  const { deletePost: deletePostFn } = usePosts();
+  const { deletePost: deletePostFn } = usePostMutations();
   const navigate = useNavigate();
 
   // Solo mostrar si el usuario está logueado y es admin
@@ -27,7 +27,7 @@ export default function PostActions({ postId, onDelete }: PostActionsProps) {
     }
 
     try {
-      await deletePostFn(postId);
+      await deletePostFn.mutateAsync(postId);
 
       // Llamar callback si existe
       if (onDelete) {

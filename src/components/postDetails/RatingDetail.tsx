@@ -1,4 +1,5 @@
 import type { RatingPost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function RatingDetail({ post }: { post: RatingPost }) {
   const typeLabels = {
@@ -18,13 +19,12 @@ export default function RatingDetail({ post }: { post: RatingPost }) {
         <div className="md:flex md:gap-8 items-center">
           {/* Cover Image */}
           {post.coverImage && (
-            <div className="w-48 h-72 mx-auto md:mx-0 shrink-0 rounded-xl overflow-hidden shadow-2xl mb-6 md:mb-0">
-              <img
-                src={post.coverImage.url}
-                alt={post.coverImage.alt}
-                className="w-full h-full object-cover"
-              />
-            </div>
+            <OptimizedImage
+              src={post.coverImage.url}
+              thumbnail={post.coverImage.thumbnail}
+              alt={post.coverImage.alt}
+              className="w-48 h-72 mx-auto md:mx-0 shrink-0 rounded-xl overflow-hidden shadow-2xl mb-6 md:mb-0"
+            />
           )}
 
           {/* Info */}

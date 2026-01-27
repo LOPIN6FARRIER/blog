@@ -1,4 +1,5 @@
 import type { LinkPost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function LinkDetail({ post }: { post: LinkPost }) {
   return (
@@ -6,13 +7,12 @@ export default function LinkDetail({ post }: { post: LinkPost }) {
       {/* Preview Card */}
       <div className="block mb-8 rounded-2xl overflow-hidden shadow-2xl bg-white dark:bg-gray-900 border border-blue-200 dark:border-gray-700">
         {post.image && (
-          <div className="aspect-[2/1] w-full bg-gray-100 dark:bg-gray-950">
-            <img
-              src={post.image.url}
-              alt={post.image.alt}
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <OptimizedImage
+            src={post.image.url}
+            thumbnail={post.image.thumbnail}
+            alt={post.image.alt}
+            className="aspect-[2/1] w-full bg-gray-100 dark:bg-gray-950"
+          />
         )}
         <div className="p-8">
           <div className="flex items-center gap-3 mb-4">

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { ProjectPost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function ProjectCard(props: ProjectPost) {
   const formatUrl = (url: string) => {
@@ -11,13 +12,15 @@ export default function ProjectCard(props: ProjectPost) {
 
   return (
     <div className="px-4 mb-6">
-      <div
-        className="relative bg-cover bg-center flex flex-col items-stretch justify-end rounded-xl overflow-hidden min-h-105 shadow-sm hover:shadow-xl transition-shadow"
-        data-alt={props.coverImage?.alt || "Hero Image"}
-        style={{
-          backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0.1) 70%, rgba(0, 0, 0, 0) 100%), url('${props.coverImage?.url}')`,
-        }}
-      >
+      {props.coverImage?.url && (
+        <OptimizedImage
+          src={props.coverImage.url}
+          thumbnail={props.coverImage?.thumbnails?.large}
+          alt={props.coverImage?.alt || "Hero Image"}
+          className="relative flex flex-col items-stretch justify-end rounded-xl overflow-hidden min-h-105 shadow-sm hover:shadow-xl transition-shadow"
+          overlay="linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0.1) 70%, rgba(0, 0, 0, 0) 100%)"
+          loading="lazy"
+        >
         <Link
           to={`/posts/${props.id}`}
           className="absolute top-3 right-3 z-10 p-2 bg-white/80 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-sm"
@@ -101,7 +104,8 @@ export default function ProjectCard(props: ProjectPost) {
             )}
           </div>
         </div>
-      </div>
+      </OptimizedImage>
+      )}
     </div>
   );
 }

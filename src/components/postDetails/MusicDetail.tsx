@@ -1,4 +1,5 @@
 import type { MusicPost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function MusicDetail({ post }: { post: MusicPost }) {
   return (
@@ -7,13 +8,12 @@ export default function MusicDetail({ post }: { post: MusicPost }) {
         <div className="flex flex-col md:flex-row gap-8 items-center">
           {/* Album Art */}
           {post.audio.coverUrl && (
-            <div className="w-64 h-64 shrink-0 rounded-xl overflow-hidden shadow-2xl">
-              <img
-                src={post.audio.coverUrl}
-                alt={post.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
+            <OptimizedImage
+              src={post.audio.coverUrl}
+              thumbnail={post.audio.coverThumbnail}
+              alt={post.title}
+              className="w-64 h-64 shrink-0 rounded-xl overflow-hidden shadow-2xl"
+            />
           )}
 
           {/* Info */}

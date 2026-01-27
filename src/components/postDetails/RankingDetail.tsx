@@ -1,4 +1,5 @@
 import type { RankingPost } from "../../types/posts/post";
+import OptimizedImage from "../Ui/OptimizedImage";
 
 export default function RankingDetail({ post }: { post: RankingPost }) {
   const typeLabels = {
@@ -14,13 +15,12 @@ export default function RankingDetail({ post }: { post: RankingPost }) {
       {/* Header */}
       <div className="mb-8 text-center">
         {post.coverImage && (
-          <div className="w-full aspect-[21/9] mb-6 rounded-2xl overflow-hidden shadow-2xl">
-            <img
-              src={post.coverImage.url}
-              alt={post.coverImage.alt}
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <OptimizedImage
+            src={post.coverImage.url}
+            thumbnail={post.coverImage.thumbnail}
+            alt={post.coverImage.alt}
+            className="w-full aspect-[21/9] mb-6 rounded-2xl overflow-hidden shadow-2xl"
+          />
         )}
         <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
           {post.title}
@@ -53,13 +53,12 @@ export default function RankingDetail({ post }: { post: RankingPost }) {
 
               {/* Cover Image */}
               {item.coverImage && (
-                <div className="w-24 h-32 shrink-0 rounded-lg overflow-hidden shadow-md">
-                  <img
-                    src={item.coverImage.url}
-                    alt={item.coverImage.alt}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                <OptimizedImage
+                  src={item.coverImage.url}
+                  thumbnail={item.coverImage.thumbnail}
+                  alt={item.coverImage.alt}
+                  className="w-24 h-32 shrink-0 rounded-lg overflow-hidden shadow-md"
+                />
               )}
 
               {/* Info */}
